@@ -1,11 +1,13 @@
 <script setup lang="ts">
 
 </script>
+
 <template>
     <div>
-       HomePage
+       First Step
     </div>
 </template>
 
+<style scoped>
 
-<style scoped></style>
+</style>

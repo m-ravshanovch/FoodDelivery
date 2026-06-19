@@ -3,7 +3,7 @@
 </script>
 <template>
     <div>
-        OrdersPage
+        Admin Home Page
     </div>
 </template>
 

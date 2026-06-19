@@ -1,0 +1,48 @@
+<script setup lang="ts">
+import { Form, Field, ErrorMessage } from "vee-validate";
+import { z } from "zod";
+import { toTypedSchema } from "@vee-validate/zod";
+import { useRouter } from "vue-router";
+
+
+const router = useRouter()
+const validationSchema = toTypedSchema(
+    z.object({
+        name: z
+            .string()
+            .min(1, "Name required")
+    })
+    
+);
+
+const onSubmit = (values: {}) => {
+    console.log("pressed")
+    console.log(values)
+    router.push("/")
+}
+</script>
+
+<template>
+    <div class="flex flex-col justify-center items-center h-screen">
+        <div>
+            <p class="font-serif font-bold text-2xl">Register as Client</p>
+        </div>
+        <Form :validation-schema="validationSchema" @submit="onSubmit" class="flex flex-col gap-y-3 w-80 p-2">
+            <div class="flex flex-col">
+                <div class="flex gap-x-2">
+                    <Field name="name" type="text" placeholder="First Name" class="py-1 bg-slate-200 w-full px-2" />
+                </div>
+                <ErrorMessage name="email" class="text-red-500 text-sm" />
+            </div>
+            <div class="flex flex-col">
+                <Field name="password" type="password" placeholder="password" class="py-1 bg-slate-200 px-2" />
+            </div>
+            <div>
+                <button type="submit"
+                    class="cursor-pointer py-2 bg-green-600 w-full text-white font-bold rounded-md">submit</button>
+            </div>
+        </Form>
+    </div>
+</template>
+
+<style scoped></style>
