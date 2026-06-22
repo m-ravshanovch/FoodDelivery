@@ -11,10 +11,10 @@ const brands = ref(data)
         <div class="py-5 flex items-center justify-between">
             <h1 class="font-bold text-2xl">Popular restaurats</h1>
         </div>
-        <div class="grid grid-cols-3 gap-x-5 gap-y-10 ">
-            <RouterLink to="" v-for="brand in brands" :key="brand.id" class="shadow-md shadow-slate-100 rounded-2xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-10 ">
+            <RouterLink :to="`/${brand.id}`" v-for="brand in brands" :key="brand.id" class="shadow-md shadow-slate-100 rounded-2xl">
                 <div class="w-full h-60 rounded-2xl">
-                    <img :src="brand.brandImage" :alt="brand.name" class="w-full h-full rounded-2xl bg-cover">
+                    <img :src="brand.brandImage" :alt="brand.name" class="w-full h-full rounded-2xl object-cover">
                 </div>
                 <div class="flex flex-col gap-3 p-2">
                     <h1 class="font-serif font-bold text-2xl">{{ brand.name }}</h1>

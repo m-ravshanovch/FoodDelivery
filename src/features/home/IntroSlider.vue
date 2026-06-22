@@ -11,9 +11,9 @@ import { sliderData } from "@/fakeData/FakeSLiderData"
 const sliders = ref(sliderData)
 </script>
 <template>
-    <div >
+    <div class="rounded-2xl p-2">
         <Swiper :modules="[Autoplay, Pagination]" :slides-per-view="1" :loop="true" :autoplay="{ delay: 3000 }"
-            :pagination="{ clickable: true }">
+            :pagination="{ clickable: true }" class="md:rounded-2xl">
             <SwiperSlide v-for="item in sliders" :key="item.id" class="relative">
                 <img :src="item.image" :alt="item.discount" class="w-full h-64 object-cover" />
                 <p class="absolute font-bold text-white text-2xl rounded-br-3xl bg-gray-900 px-3 py-2 top-0 left-0">{{ item.discount }}</p>

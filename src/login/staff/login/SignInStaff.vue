@@ -2,7 +2,7 @@
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
-
+import { loginUser } from "@/service/auth/AuthService";
 
 const validationSchema = toTypedSchema(
     z.object({
@@ -16,8 +16,13 @@ const validationSchema = toTypedSchema(
 
 );
 
-const onSubmit = (values: {}) => {
-    console.log(values)
+const onSubmit = (values:any) => {
+   try{
+      loginUser(values)
+   }catch(error){
+     console.log("Error:",error);
+     
+   }
 }
 </script>
 
@@ -36,7 +41,7 @@ const onSubmit = (values: {}) => {
                 <ErrorMessage name="password" class="text-red-500 text-sm" />
             </div>
             <div>
-                <p class="text-sm">you don't have a account ? <RouterLink to="/auth/register" class="underline text-blue-600">register</RouterLink></p>
+                <p class="text-sm">you don't have a account ? <RouterLink to="/staff-auth/register" class="underline text-blue-600">register</RouterLink></p>
             </div>
             <div>
                 <button type="submit" class="cursor-pointer py-2 bg-green-600 w-full text-white font-bold rounded-md">submit</button>

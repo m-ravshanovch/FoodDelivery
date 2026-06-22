@@ -3,22 +3,30 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useRouter } from "vue-router";
-
-
+import { registerNextStep } from "@/service/auth/AuthService";
 const router = useRouter()
+
 const validationSchema = toTypedSchema(
     z.object({
         name: z
             .string()
-            .min(1, "Name required")
+            .min(1, "Name required"),
+        password:z
+                .string()
+                .min(3,"Eng kamida 3ta belgi bo'lsin")
+                .max(20,"Belgilar soni 20 tagacha")
     })
     
 );
 
-const onSubmit = (values: {}) => {
-    console.log("pressed")
-    console.log(values)
-    router.push("/")
+const onSubmit = (values:any) => {
+
+    try{
+        registerNextStep(values)
+        router.push("/")
+    }catch(error){
+        console.log("Error:",error);
+    }
 }
 </script>
 

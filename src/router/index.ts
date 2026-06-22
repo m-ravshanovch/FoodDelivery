@@ -38,7 +38,7 @@ const router = createRouter({
         },
         {
           path: "register",
-          name: "StaffLogin",
+          name: "StaffRegister",
           component: () => import("@/login/staff/register/FirstStep.vue"),
         },
         {
@@ -58,6 +58,11 @@ const router = createRouter({
           path: "",
           name: "Home",
           component: () => import("@/pages/client/HomePage.vue"),
+        },
+        {
+          path:"/:id",
+          name:"Resturant page",
+          component:()=>import("@/features/home/ResturantPage.vue")
         }
       ],
     },
