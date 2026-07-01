@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-
+import Cookies from "js-cookie";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    // Client auth
     {
       path: "/auth",
       component: () => import("@/layouts/client/ClientAuthLayout.vue"),
@@ -26,7 +25,6 @@ const router = createRouter({
       ],
     },
 
-    // Staff auth
     {
       path: "/staff-auth",
       component: () => import("@/layouts/staff/StaffAuthLayout.vue"),
@@ -49,7 +47,6 @@ const router = createRouter({
       ],
     },
 
-    // Client pages
     {
       path: "/",
       component: () => import("@/layouts/client/MainClientLayout.vue"),
@@ -60,26 +57,79 @@ const router = createRouter({
           component: () => import("@/pages/client/HomePage.vue"),
         },
         {
-          path:"/:id",
-          name:"Resturant page",
-          component:()=>import("@/features/home/ResturantPage.vue")
-        }
+          path: "restaurant/:id",
+          name: "Resturant page",
+          component: () => import("@/features/client/restaurantPage/ResturantPage.vue")
+        },
+        {
+          path: "orderPage",
+          name: "Order Page",
+          component: () => import("@/features/client/order/OrderPage.vue"),
+          meta: {
+            requiresAuth: true,
+            role: "CUSTOMER",
+            authType: "client",
+            loginPath: "/auth/login"
+          }
+        },
       ],
     },
 
-    // Staff pages
     {
       path: "/admin",
       component: () => import("@/layouts/staff/admin/MainAdminLayout.vue"),
+      meta: {
+        requiresAuth: true,
+        role: "RESTAURANT_OWNER",
+        authType: "staff",
+        loginPath: "/staff-auth/login"
+      },
       children: [
         {
           path: "",
           name: "Dashboard",
           component: () => import("@/pages/admin/AdminHomePage.vue"),
-        }
+        },
+        {
+          path: "products",
+          name: "Products",
+          component: () => import("@/pages/admin/AdminProductsPage.vue"),
+        },
+        {
+          path: "statistics",
+          name: "Statistics",
+          component: () => import("@/pages/admin/AdminStatisticsPage.vue"),
+        },
+        {
+          path: "addProduct",
+          name: "Add Products",
+          component: () => import("@/features/admin/products/AddProducts.vue"),
+        },
       ],
     },
   ],
 });
+
+router.beforeEach((to) => {
+  const token = Cookies.get("accessToken");
+  const role = Cookies.get("role");
+  
+
+  if (to.meta.requiresAuth && !token) {
+    if (to.meta.authType === "staff") {
+      return String(to.meta.loginPath)
+    } else {
+      return String(to.meta.loginPath)
+    }
+  }
+  if (to.meta.guestOnly && token) {
+    return "/";
+  }
+
+  if (to.meta.role && role !== to.meta.role) {
+    return "/"
+  }
+
+})
 
 export default router;

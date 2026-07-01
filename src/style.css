@@ -3,3 +3,12 @@
 .font-mvboli {
   font-family: "MVBoli", sans-serif;
 }
+/* Global scrollbar hide */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

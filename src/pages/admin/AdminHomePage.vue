@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import Cards from '@/features/admin/home/Cards.vue';
 
 </script>
 <template>
     <div>
-        Admin Home Page
+       <Cards/>
     </div>
 </template>
 

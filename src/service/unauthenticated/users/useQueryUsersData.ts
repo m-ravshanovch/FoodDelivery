@@ -5,7 +5,7 @@ import {
 
 import { useService } from "@/service/unauthenticated/useService";
 
-export const useQueryRoles = () => {
+export const useQueryUsersData = () => {
   // const queryClient = useQueryClient();
 
   const useRoles = () =>
@@ -13,6 +13,14 @@ export const useQueryRoles = () => {
       queryKey: ["roles"],
       queryFn: async () => {
         const response = await useService.getAllRoles();
+        return response.data;
+      },
+    });
+  const useUser = () =>
+    useQuery({
+      queryKey: ["user"],
+      queryFn: async () => {
+        const response = await useService.getUserById();
         return response.data;
       },
     });
@@ -36,6 +44,7 @@ export const useQueryRoles = () => {
 
 
   return {
-    useRoles
+    useRoles,
+    useUser
   };
 };

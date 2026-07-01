@@ -3,9 +3,10 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { authApi } from "@/api/auth.api";
-import { ref } from "vue";
+import { ref, computed, onUnmounted } from "vue";
 import { verification } from "@/service/auth/AuthService";
 import { useRouter } from "vue-router";
+
 const validationSchema = toTypedSchema(
   z.object({
     email: z
@@ -15,21 +16,64 @@ const validationSchema = toTypedSchema(
 
     code: z
       .string()
-      .min(5, "OTP must be 6 digits"),
+      .min(5, "OTP must be 5 digits")
   })
 );
 
+const router = useRouter();
 
-const router = useRouter()
 const email = ref("");
 
+const timeLeft = ref(0);
+let timer: number | null = null;
+
+const formattedTime = computed(() => {
+  const minutes = Math.floor(timeLeft.value / 60);
+  const seconds = timeLeft.value % 60;
+
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+    2,
+    "0"
+  )}`;
+});
+
+const startTimer = () => {
+  timeLeft.value = 180; 
+
+  if (timer) {
+    clearInterval(timer);
+  }
+
+  timer = window.setInterval(() => {
+    if (timeLeft.value > 0) {
+      timeLeft.value--;
+    } else {
+      clearInterval(timer!);
+      timer = null;
+    }
+  }, 1000);
+};
+
+onUnmounted(() => {
+  if (timer) {
+    clearInterval(timer);
+  }
+});
+
 const handleGetCode = async (email: string) => {
+  if (!email) {
+    alert("Please enter your email first.");
+    return;
+  }
+
   try {
-    const res = await authApi.post("/auth/sent-otpp", {
+    const res = await authApi.post("/auth/sent-otp", {
       email,
     });
 
     console.log("OTP sent:", res.data);
+
+    startTimer();
   } catch (error: any) {
     console.log(
       "Error in taking Verification Code:",
@@ -40,9 +84,11 @@ const handleGetCode = async (email: string) => {
 
 const handleSubmitCode = async (values: any) => {
   try {
-    verification(values)
-    console.log("Verificate Succesfully");
-    router.push('/staff-auth/register/1')
+    await verification(values);
+
+    console.log("Verified Successfully");
+
+    router.push("/auth/register/1");
   } catch (error) {
     console.log("Through:", error);
   }
@@ -50,77 +96,49 @@ const handleSubmitCode = async (values: any) => {
 </script>
 
 <template>
-  <div class="flex flex-col justify-center items-center h-screen">
-    <div>
-      <p class="font-serif font-bold text-2xl">
+  <div class="flex items-center justify-center h-screen">
+    <div class="w-96 rounded-xl shadow-lg border border-gray-200 p-6">
+      <h1 class="text-2xl font-bold text-center mb-6">
         Register as Staff
-      </p>
-    </div>
+      </h1>
 
-    <Form
-      :validation-schema="validationSchema"
-      @submit="handleSubmitCode"
-      class="flex flex-col gap-y-3 w-80 p-2"
-    >
-      <div class="flex flex-col">
-        <div class="flex gap-x-2">
-          <Field
-            name="email"
-            v-model="email"
-            type="email"
-            placeholder="Email"
-            class="py-1 bg-slate-200 w-full px-2"
-          />
+      <Form :validation-schema="validationSchema" @submit="handleSubmitCode" class="flex flex-col gap-4">
+        <!-- Email -->
+        <div>
+          <div class="flex gap-2">
+            <Field name="email" v-model="email" type="email" placeholder="Email"
+              class="flex-1 rounded-md bg-gray-100 px-3 py-2 outline-none focus:ring-2 focus:ring-green-500" />
 
-          <button
-            type="button"
-            @click="handleGetCode(email)"
-            class="bg-gray-900 text-white text-sm font-bold px-2 rounded-md cursor-pointer"
-          >
-            Send
-          </button>
+            <button type="button" @click="handleGetCode(email)" :disabled="timeLeft > 0"
+              class="min-w-24 rounded-md bg-gray-900 text-white font-semibold px-3 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-gray-800 transition">
+              {{ timeLeft > 0 ? formattedTime : "Send" }}
+            </button>
+          </div>
+
+          <ErrorMessage name="email" class="text-red-500 text-sm mt-1" />
         </div>
 
-        <ErrorMessage
-          name="email"
-          class="text-red-500 text-sm"
-        />
-      </div>
+        <!-- Verification Code -->
+        <div>
+          <Field name="code" type="text" maxlength="6" placeholder="Verification Code"
+            class="w-full rounded-md bg-gray-100 px-3 py-2 outline-none focus:ring-2 focus:ring-green-500" />
 
-      <div class="flex flex-col">
-        <Field
-          name="code"
-          type="text"
-          placeholder="Verification Code"
-          class="py-1 bg-slate-200 px-2"
-        />
+          <ErrorMessage name="code" class="text-red-500 text-sm mt-1" />
+        </div>
 
-        <ErrorMessage
-          name="otp"
-          class="text-red-500 text-sm"
-        />
-      </div>
-
-      <div>
         <p class="text-sm">
-          Do you have an account ?
-          <RouterLink
-            to="/auth/login"
-            class="underline text-blue-600"
-          >
-            login
+          Do you have an account?
+          <RouterLink to="/staff-auth/login" class="text-blue-600 underline">
+            Login
           </RouterLink>
         </p>
-      </div>
 
-      <div>
-        <button
-          type="submit"
-          class="cursor-pointer py-2 bg-green-600 w-full text-white font-bold rounded-md"
-        >
+        <button type="submit" class="rounded-md bg-green-600 py-2 font-bold text-white hover:bg-green-700 transition">
           Next
         </button>
-      </div>
-    </Form>
+      </Form>
+    </div>
   </div>
 </template>
+
+<style scoped></style>

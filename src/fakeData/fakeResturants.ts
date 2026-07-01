@@ -1,4 +1,4 @@
-export const data = [
+export const dataData = [
   {
     id: 1,
     uniqueId: "maxway",

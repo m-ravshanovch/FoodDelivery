@@ -4,8 +4,7 @@ import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useRouter } from "vue-router";
 import { registerStaffNextStep } from "@/service/auth/AuthService";
-import { useQueryRoles } from "@/service/unauthenticated/users/useQueryRoles";
-
+import { useQueryUsersData } from "@/service/unauthenticated/users/useQueryUsersData";
 const router = useRouter();
 
 const validationSchema = toTypedSchema(
@@ -14,14 +13,16 @@ const validationSchema = toTypedSchema(
 
     password: z
       .string()
-      .min(3, "Eng kamida 3 ta belgi bo'lsin")
+      .min(6, "Eng kamida 6 ta belgi bo'lsin")
       .max(20, "Belgilar soni 20 tagacha"),
-
+    phone_number: z
+      .string()
+      .min(1, "Phone number required"),
     role_id: z.number().min(1, "Role tanlang"),
   })
 );
 
-const { useRoles } = useQueryRoles();
+const { useRoles } = useQueryUsersData();
 
 const {
   data: roles,
@@ -35,7 +36,7 @@ const onSubmit = async (values: any) => {
 
     await registerStaffNextStep(values);
 
-    router.push("/");
+    router.push("/staff-auth/login");
   } catch (error) {
     console.log("Error:", error);
   }
@@ -66,6 +67,19 @@ const onSubmit = async (values: any) => {
 
         <ErrorMessage
           name="name"
+          class="text-red-500 text-sm"
+        />
+      </div>
+      <div class="flex flex-col">
+        <Field
+          name="phone_number"
+          type="text"
+          placeholder="Phone Number"
+          class="py-2 bg-slate-200 w-full px-2 rounded-md"
+        />
+
+        <ErrorMessage
+          name="phone_number"
           class="text-red-500 text-sm"
         />
       </div>

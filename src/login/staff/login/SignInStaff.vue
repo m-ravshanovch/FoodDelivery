@@ -3,7 +3,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { loginUser } from "@/service/auth/AuthService";
-
+import { useRouter } from "vue-router";
 const validationSchema = toTypedSchema(
     z.object({
         email: z
@@ -15,15 +15,17 @@ const validationSchema = toTypedSchema(
     })
 
 );
+const router = useRouter()
 
 const onSubmit = (values:any) => {
    try{
       loginUser(values)
+      router.push("/admin")
    }catch(error){
      console.log("Error:",error);
      
    }
-}
+}   
 </script>
 
 <template>
