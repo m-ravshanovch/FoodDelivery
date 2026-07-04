@@ -88,7 +88,7 @@ const handleSubmitCode = async (values: any) => {
 
     console.log("Verified Successfully");
 
-    router.push("/auth/register/1");
+    router.push("/staff-auth/register/1");
   } catch (error) {
     console.log("Through:", error);
   }

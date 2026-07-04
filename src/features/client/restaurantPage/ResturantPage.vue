@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { ArrowLeft, ShoppingCart, Earth, Heart } from "lucide-vue-next";
-import { shoppingCart } from "@/fakeData/fakeShoppingCart"
 import { useQueryService } from "@/service/unauthenticated/useQueryService";
 import { useCartStore } from "@/stores/card";
 import ShopCart from "./ShopCart.vue";
@@ -62,7 +61,6 @@ console.log("Restaurant page:", productsData.value)
 
 
 
-console.log(shoppingCart.value)
 </script>
 
 <template>
@@ -112,40 +110,6 @@ console.log(shoppingCart.value)
             </div>
 
             <div v-else class="overflow-y-auto h-full no-scrollbar border border-green-100 py-3 rounded-xl bg-white px-2">
-
-                <div class="flex flex-col gap-y-2 ">
-
-                    <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 gap-y-10">
-                <RouterLink to="" v-for="food in promotionFoods" :key="food.id"
-                    class="shadow-md shadow-slate-100 rounded-2xl">
-                    <div class="w-full h-60 rounded-2xl">
-                        <img :src="food.image" :alt="food.name" class="w-full h-full rounded-2xl object-cover">
-                    </div>
-                    <div class="flex flex-col gap-3 p-2">
-                        <h1 class="font-serif font-bold text-2xl">{{ food.name }} </h1>
-                        <div class="flex gap-x-2">
-                            <p class="font-mvboli line-through">{{ food.price }}</p>
-                            <p>{{ food.newPrice }} so'm </p>
-                        </div>
-                        <p class="flex gap-x-1 text-sm">
-                            <Zap :size="18" />{{ food.description }}
-                        </p>
-                        <div class="flex gap-x-2">
-                            <div class="bg-green-600 w-fit px-3 rounded-2xl">
-                                <p class="text-sm font-bold text-white">discount {{ food.discount }}</p>
-                            </div>
-                            <div class="bg-yellow-600 w-fit px-3 rounded-2xl">
-                                <p class="text-sm font-bold text-white"> {{ food.promotion }}</p>
-                            </div>
-                        </div>
-                        <button @click.prevent="handleCartClick(food.id)"
-                            class="bg-linear-to-tl from-purple-900 to-purple-500 cursor-pointer flex items-center justify-center py-1 gap-2 rounded-md text-white font-bold">
-                            <ShoppingCart /> Savatcha
-                        </button>
-                    </div>
-                </RouterLink>
-            </div> -->
-                </div>
                 <div class="flex flex-col overflow-y-auto">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 gap-y-10">
                         <RouterLink to="" v-for="food in products" :key="food.id"
@@ -202,7 +166,7 @@ console.log(shoppingCart.value)
         </div>
         <div class="hidden lg:block">
             <ShopCart 
-            :value="id" />
+            :value="id"  />
         </div>
     </div>
 </template>

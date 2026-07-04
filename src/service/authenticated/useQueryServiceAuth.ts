@@ -1,10 +1,11 @@
 import {
+  useMutation,
   useQuery,
-  // useQueryClient,
+  useQueryClient,
 } from "@tanstack/vue-query";
 import { useServiceAuth } from "./useServiceAuth";
 export const useQueryServiceAuth = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const useNotifications = () =>
     useQuery({
@@ -24,25 +25,44 @@ export const useQueryServiceAuth = () => {
 //     });
 
 
-//   const useCreateOrder = () =>
-//     useMutation({
-//       mutationFn: async (payload: any) => {
-//         const response =
-//           await useService.createOrder(payload);
+  const useCreateOrder = () =>
+    useMutation({
+      mutationFn: async (payload: any) => {
+        const response =
+          await useServiceAuth.createOrder(payload);
 
-//         return response.data;
-//       },
+        return response.data;
+      },
 
-//       onSuccess: () => {
-//         queryClient.invalidateQueries({
-//           queryKey: ["orders"],
-//         });
-//       },
-//     });
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["orders"],
+        });
+      },
+    });
+
+    
+  const useCreateRestaurant = () =>
+    useMutation({
+      mutationFn: async (payload: any) => {
+        const response =
+          await useServiceAuth.createRestaurant(payload);
+
+        return response.data;
+      },
+
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["restaurants"],
+        });
+      },
+    });
 
 
   return {
     useNotifications,
+    useCreateOrder,
+    useCreateRestaurant
     // useCategories
   };
 };

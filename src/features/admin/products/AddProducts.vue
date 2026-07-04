@@ -4,9 +4,12 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { Upload, ImageIcon } from "lucide-vue-next";
+import { useQueryService } from "@/service/unauthenticated/useQueryService";
 
+const restaurantId = localStorage.getItem("restaurantId")
 const imagePreview = ref("");
-
+const { useCategoriesByRestaurantId } = useQueryService()
+const { data: categoryData } = useCategoriesByRestaurantId(restaurantId ?? '')
 const validationSchema = toTypedSchema(
     z.object({
         restaurantUniqueId: z
@@ -36,6 +39,9 @@ const validationSchema = toTypedSchema(
             .min(1, "Yetkazish vaqti kiritilishi kerak"),
 
         status: z.boolean().default(true),
+        categories: z
+            .array(z.number())
+            .min(1, "Kamida bitta kategoriya tanlang"),
     })
 );
 
@@ -73,8 +79,9 @@ const onSubmit = (values: any) => {
                 </p>
             </div>
 
-            <Form :validation-schema="validationSchema" @submit="onSubmit"
-                class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Form :validation-schema="validationSchema" :initial-values="{
+                restaurantUniqueId: restaurantId
+            }" @submit="onSubmit" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- LEFT SIDE -->
                 <div class="space-y-5">
                     <div>
@@ -82,7 +89,7 @@ const onSubmit = (values: any) => {
                             Restaurant Unique ID
                         </label>
 
-                        <Field name="restaurantUniqueId" placeholder="maxway"
+                        <Field name="restaurantUniqueId" readonly data-="" placeholder="maxway"
                             class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:border-green-500" />
 
                         <ErrorMessage name="restaurantUniqueId" class="text-red-500 text-sm" />
@@ -140,16 +147,39 @@ const onSubmit = (values: any) => {
                                 class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:border-green-500" />
                         </div>
                     </div>
+                    <div class="flex w-full ">
+                        <div class="w-full">
+                            <label class="block mb-2 font-medium">
+                                Categories
+                            </label>
 
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Yetkazish vaqti
-                        </label>
+                            <div class="flex flex-col h-40 overflow-y-auto gap-3">
+                                <label v-if="categoryData?.length > 0" v-for="category in categoryData"
+                                    :key="category.id"
+                                    class="flex items-center gap-2  rounded-lg px-3 py-2 cursor-pointer">
+                                    <Field type="checkbox" name="categories" :value="category.id" />
 
-                        <Field name="deliveryTime" placeholder="20 min"
-                            class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:border-green-500" />
+                                    {{ category.name }}
+                                </label>
 
-                        <ErrorMessage name="deliveryTime" class="text-red-500 text-sm" />
+                                <div v-else class="">
+                                    <p class="text-sm text-zinc-400">Categoriyalar yoq</p>
+                                </div>
+                            </div>
+
+                            <ErrorMessage name="categories" class="text-red-500 text-sm" />
+                        </div>
+
+                        <div class=" w-full">
+                            <label class="block mb-2 font-medium">
+                                Yetkazish vaqti
+                            </label>
+
+                            <Field name="deliveryTime" placeholder="20 min"
+                                class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:border-green-500" />
+
+                            <ErrorMessage name="deliveryTime" class="text-red-500 text-sm" />
+                        </div>
                     </div>
 
                     <div>

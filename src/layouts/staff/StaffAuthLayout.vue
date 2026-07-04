@@ -3,8 +3,8 @@
 </script>
 
 <template>
-    <div class="flex">
-        <div class="h-screen w-full flex items-center justify-center bg-green-600">
+    <div class="flex md:flex-row flex-col">
+        <div class="h-screen w-full hidden lg:flex items-center justify-center border-r border-white bg-green-600">
                <p class="text-white text-3xl font-bold">Ishonch Staff</p>
         </div>
         <div class="w-full">

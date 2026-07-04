@@ -25,11 +25,11 @@ const data = [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-3 w-full  gap-4 p-5">
+  <div class="grid grid-cols-1 md:grid-cols-3 w-full  gap-4 ">
     <div
       v-for="card in data"
       :key="card.name"
-      class="shadow-lg shadow-green-100 rounded-xl p-4 bg-white "
+      class="shadow-lg shadow-slate-200 rounded-xl p-4 border border-slate-200 bg-white "
     >
       <div class="flex items-center justify-between">
         <h3 class="text-gray-500">

@@ -35,6 +35,28 @@ const router = createRouter({
           component: () => import("@/login/staff/login/SignInStaff.vue"),
         },
         {
+          path: "loginRestaurant",
+          name: "loginRestaurant",
+          component: () => import("@/login/staff/login/LogInRestaurant.vue"),
+          meta: {
+            requiresAuth: true,
+            role: "RESTAURANT_OWNER",
+            authType: "staff",
+            loginPath: "/staff-auth/login"
+          }
+        },
+        {
+          path: "addRestaurant",
+          name: "addRestaurant",
+          component: () => import("@/login/staff/login/AddRestaurant.vue"),
+          meta: {
+            requiresAuth: true,
+            role: "RESTAURANT_OWNER",
+            authType: "staff",
+            loginPath: "/staff-auth/login"
+          }
+        },
+        {
           path: "register",
           name: "StaffRegister",
           component: () => import("@/login/staff/register/FirstStep.vue"),
@@ -43,7 +65,8 @@ const router = createRouter({
           path: "register/1",
           name: "StaffLoginStep1",
           component: () => import("@/login/staff/register/SecondStep.vue"),
-        }
+        },
+        
       ],
     },
 
@@ -65,6 +88,17 @@ const router = createRouter({
           path: "orderPage",
           name: "Order Page",
           component: () => import("@/features/client/order/OrderPage.vue"),
+          meta: {
+            requiresAuth: true,
+            role: "CUSTOMER",
+            authType: "client",
+            loginPath: "/auth/login"
+          }
+        },
+        {
+          path: "myOrders",
+          name: "My Orders",
+          component: () => import("@/features/client/order/MyOrders.vue"),
           meta: {
             requiresAuth: true,
             role: "CUSTOMER",
@@ -104,6 +138,11 @@ const router = createRouter({
           path: "addProduct",
           name: "Add Products",
           component: () => import("@/features/admin/products/AddProducts.vue"),
+        },
+        {
+          path: "restaurant",
+          name: "Restaurant",
+          component: () => import("@/features/admin/restaurant/Restaurant.vue"),
         },
       ],
     },

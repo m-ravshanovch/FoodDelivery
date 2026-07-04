@@ -101,7 +101,6 @@ export const registerNextStep = async (payload: RegisterForm) => {
   }
 };
 
-// ================= STAFF REGISTER =================
 
 export const registerStaffNextStep = async (
   payload: RegisterStaffForm
@@ -124,7 +123,6 @@ export const registerStaffNextStep = async (
   }
 };
 
-// ================= LOGOUT =================
 
 export const logOut = async () => {
   try {

@@ -30,19 +30,17 @@ const menuList = [
 ]
 console.log("auth/me", data.value)
 
-const handleLogOut = async () => {
+
+const handleLogout = async () => {
   try {
-    const role = Cookies.get("role");
-
     await logOut();
-
-    router.replace(
-      role === "CUSTOMER"
-        ? "/auth/login"
-        : "/staff-auth/login"
-    );
+    if (role === "CUSTOMER") {
+      router.push("/auth/login");
+    } else {
+      router.push("/staff-auth/login");
+    }
   } catch (error) {
-    console.error(error);
+    console.error("Logout failed:", error);
   }
 };
 
@@ -63,8 +61,8 @@ const handleLogOut = async () => {
         </div>
 
         <button
-            @click="handleLogOut"
-            class="w-full flex justify-center gap-x-2  items-center mt-4 bg-green-600 hover:bg-green-700 transition text-white py-2 rounded-xl font-medium">
+            @click.prevent="handleLogout"
+            class="w-full flex cursor-pointer justify-center gap-x-2  items-center mt-4 bg-green-600 hover:bg-green-700 transition text-white py-2 rounded-xl font-medium">
             <p class="text-sm">Profildan Chiqish</p>
             <LogOut :size="18" />
         </button>

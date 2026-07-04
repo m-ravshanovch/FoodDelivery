@@ -7,9 +7,9 @@ import MobileHeader from '@/components/client/MobileHeader.vue';
 <template>
     <div class="min-h-dvh flex flex-col gap-y-10 justify-between">
         <div >
-            <Header class="hidden md:flex container md:px-20 mx-auto" />
+            <Header class="hidden md:flex px-5 container lg:px-20 mx-auto" />
             <MobileHeader class="block md:hidden" />
-            <RouterView class="container md:px-20 mx-auto" />
+            <RouterView class="container px-5 lg:px-20 mx-auto" />
         </div>
         <Footer />
     </div>

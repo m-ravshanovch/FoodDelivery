@@ -15,6 +15,9 @@ export const useQueryService = () => {
   const useRestaurantById = (uuid: string) =>
     useQuery({
       queryKey: ["restaurant", uuid],
+
+      enabled: computed(() => uuid.trim() !== ""),
+
       queryFn: async () => {
         const response = await useService.getResturantById(uuid);
         return response.data;
@@ -56,6 +59,16 @@ export const useQueryService = () => {
       queryFn: async () => {
         const response =
           await useService.getCategoriesByResturantId(restaurant_id);
+
+        return response.data;
+      },
+    });
+  const useRestaurantsByOwnerId = (owner_id: number) =>
+    useQuery({
+      queryKey: ["restaurantByOwnerId", owner_id],
+      queryFn: async () => {
+        const response =
+          await useService.getRestaurantsByOwnerId(owner_id);
 
         return response.data;
       },
@@ -103,6 +116,7 @@ export const useQueryService = () => {
     useAds,
     useCategoriesByRestaurantId,
     useRestaurantsByCategory,
-    useAllProductsByCategoryAndRestaurantId
+    useAllProductsByCategoryAndRestaurantId,
+    useRestaurantsByOwnerId
   };
 };

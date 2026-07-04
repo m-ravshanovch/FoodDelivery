@@ -48,7 +48,6 @@ const isLoading = computed(() => {
 <template>
   <div class="bg-white">
 
-    <!-- Categories -->
 
     <div class="pt-5">
       <div class="flex gap-2 overflow-x-auto px-2">
@@ -82,16 +81,14 @@ const isLoading = computed(() => {
       </div>
     </div>
 
-    <!-- Title -->
 
     <div class="py-5 px-2">
       <h1 class="flex items-center gap-2 text-2xl font-bold">
         <Hamburger />
-        Restaurants
+        Restaranlar
       </h1>
     </div>
 
-    <!-- Loading -->
 
     <div
       v-if="isLoading"
@@ -103,7 +100,6 @@ const isLoading = computed(() => {
       />
     </div>
 
-    <!-- Restaurants -->
 
     <div
       v-else
@@ -138,6 +134,5 @@ const isLoading = computed(() => {
         </div>
       </RouterLink>
     </div>
-
   </div>
 </template>

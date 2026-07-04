@@ -20,7 +20,7 @@ const router = useRouter()
 const onSubmit = (values:any) => {
    try{
       loginUser(values)
-      router.push("/admin")
+      router.push("/staff-auth/loginRestaurant")
    }catch(error){
      console.log("Error:",error);
      

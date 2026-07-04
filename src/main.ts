@@ -5,7 +5,7 @@ import "./style.css";
 import App from "./App.vue";
 import router from "@/router";
 import { VueQueryPlugin } from "@tanstack/vue-query";
-
+import 'leaflet/dist/leaflet.css';
 const app = createApp(App);
 
 app
