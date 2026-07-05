@@ -9,7 +9,7 @@ import MobileHeader from '@/components/client/MobileHeader.vue';
         <div >
             <Header class="hidden md:flex px-5 container lg:px-20 mx-auto" />
             <MobileHeader class="block md:hidden" />
-            <RouterView class="container px-5 lg:px-20 mx-auto" />
+            <RouterView class="container md:px-5 lg:px-20 mx-auto" />
         </div>
         <Footer />
     </div>

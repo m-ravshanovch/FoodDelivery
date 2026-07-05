@@ -12,7 +12,7 @@ console.log(data.value)
 </script>
 <template>
     <div v-if="isLoading" class="flex justify-center md:p-3 items-center w-full">
-        <div class="relative flex items-center justify-center h-70 w-full animate-pulse bg-green-600 rounded-2xl">
+        <div class="relative flex items-center justify-center h-40 md:h-70 w-full animate-pulse bg-green-600 rounded-2xl">
               <IntroLoading/>
         </div>
     </div>
@@ -20,7 +20,7 @@ console.log(data.value)
         <Swiper :modules="[Autoplay, Pagination]" :slides-per-view="1" :loop="true" :autoplay="{ delay: 3000 }"
             :pagination="{ clickable: true }" class="md:rounded-2xl">
             <SwiperSlide v-for="item in data" :key="item.id" class="relative">
-                <img :src="item.image_ads" :alt="item.discount" class="w-full h-70  object-cover " />
+                <img :src="item.image_ads" :alt="item.discount" class="w-full h-40 md:h-70  object-cover " />
             </SwiperSlide>
         </Swiper>
     </div>

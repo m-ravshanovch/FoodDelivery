@@ -111,7 +111,7 @@ console.log("Restaurant page:", productsData.value)
 
             <div v-else class="overflow-y-auto h-full no-scrollbar border border-green-100 py-3 rounded-xl bg-white px-2">
                 <div class="flex flex-col overflow-y-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 gap-y-10">
+                    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5 gap-y-10">
                         <RouterLink to="" v-for="food in products" :key="food.id"
                             class="shadow-md shadow-slate-100 rounded-2xl flex flex-col justify-between">
                             <div class="w-full relative  h-40 rounded-2xl">

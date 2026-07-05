@@ -5,12 +5,11 @@ import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { loginUser } from "@/service/auth/AuthService";
 import { useRouter } from "vue-router";
-import { ClipLoader } from "vue-spinner";
 
 const router = useRouter();
 
 const isLoading = ref(false);
-
+const delay = (ms:number)=>new Promise((resolve)=>setTimeout(resolve,ms))
 const validationSchema = toTypedSchema(
   z.object({
     email: z
@@ -30,9 +29,11 @@ const onSubmit = async (values: any) => {
 
     await loginUser(values);
 
+    await delay(1000)
     router.push("/");
   } catch (error) {
     console.log("Error:", error);
+    console.log("massage")
   } finally {
     isLoading.value = false;
   }
@@ -41,65 +42,38 @@ const onSubmit = async (values: any) => {
 
 <template>
   <div class="flex flex-col justify-center items-center h-screen">
-    <div>
-      <p class="font-serif font-bold text-2xl mb-5">
-        Login as Client
-      </p>
-    </div>
 
-    <Form
-      :validation-schema="validationSchema"
-      @submit="onSubmit"
-      class="flex flex-col gap-y-3 w-80 p-2"
-    >
+
+    <Form :validation-schema="validationSchema" @submit="onSubmit" class="flex flex-col gap-y-3 w-90 ">
+      <div>
+        <p class=" text-black font-bold text-2xl ">
+          Hello! Welcome  Back
+        </p>
+        
+      </div>
       <div class="flex flex-col">
-        <Field
-          name="email"
-          type="email"
-          placeholder="Email"
-          class="py-2 px-3 border rounded-md outline-none focus:ring-2 focus:ring-green-500"
-        />
-        <ErrorMessage
-          name="email"
-          class="text-red-500 text-sm"
-        />
+        <Field name="email" type="email" placeholder="Email"
+          class="py-2 px-3 border  outline-none border-slate-300 focus:ring-2 focus:ring-green-500" />
+        <ErrorMessage name="email" class="text-red-500 text-sm" />
       </div>
 
       <div class="flex flex-col">
-        <Field
-          name="password"
-          type="password"
-          placeholder="Password"
-          class="py-2 px-3 border rounded-md outline-none focus:ring-2 focus:ring-green-500"
-        />
-        <ErrorMessage
-          name="password"
-          class="text-red-500 text-sm"
-        />
+        <Field name="password" type="password" placeholder="Password"
+          class="py-2 px-3 border text-sm outline-none border-slate-300 focus:ring-2 focus:ring-green-500" />
+        <ErrorMessage name="password" class="text-red-500 text-sm" />
       </div>
 
       <div>
         <p class="text-sm">
           You don't have an account?
-          <RouterLink
-            to="/auth/register"
-            class="underline text-blue-600 ml-1"
-          >
+          <RouterLink to="/auth/register" class="underline text-blue-600 ml-1">
             Register
           </RouterLink>
         </p>
       </div>
 
-      <button
-        type="submit"
-        :disabled="isLoading"
-        class="cursor-pointer py-2 bg-green-600 w-full text-white font-bold rounded-md flex items-center justify-center gap-3 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
-      >
-        <ClipLoader
-          v-if="isLoading"
-          :loading="true"
-          color="#ffffff"
-        />
+      <button type="submit" :disabled="isLoading"
+        class="cursor-pointer py-2 bg-green-600 w-full text-white font-bold rounded-md flex items-center justify-center gap-3 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed">
 
         <span>
           {{ isLoading ? "Signing in..." : "Submit" }}
