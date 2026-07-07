@@ -66,13 +66,14 @@ const router = createRouter({
           name: "StaffLoginStep1",
           component: () => import("@/login/staff/register/SecondStep.vue"),
         },
-        
+
       ],
     },
 
     {
       path: "/",
       component: () => import("@/layouts/client/MainClientLayout.vue"),
+      
       children: [
         {
           path: "",
@@ -130,9 +131,9 @@ const router = createRouter({
           component: () => import("@/pages/admin/AdminProductsPage.vue"),
         },
         {
-          path: "statistics",
-          name: "Statistics",
-          component: () => import("@/pages/admin/AdminStatisticsPage.vue"),
+          path: "orders",
+          name: "AdminOrders",
+          component: () => import("@/pages/admin/AdminOrdersPage.vue"),
         },
         {
           path: "addProduct",
@@ -146,13 +147,69 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/curier",
+      component: () => import("@/layouts/staff/curier/MainCurierLayout.vue"),
+      meta: {
+        requiresAuth: true,
+        role: "COURIER",
+        authType: "staff",
+        loginPath: "/staff-auth/login"
+      },
+      children: [
+        {
+          path: "",
+          name: "HomeCurier",
+          component: () => import("@/pages/curier/HomeCurier.vue"),
+        },
+        {
+          path: "orders",
+          name: "OrdersCurier",
+          component: () => import("@/pages/curier/OrdersCurier.vue"),
+        },
+        {
+          path: "history",
+          name: "history",
+          component: () => import("@/pages/curier/HistoryCurier.vue"),
+        },
+      ],
+    },
+    {
+      path: "/superAdmin",
+      component: () => import("@/layouts/staff/superAdmin/MainSuperAdminLayout.vue"),
+      meta: {
+        requiresAuth: true,
+        role: "ADMIN",
+        authType: "staff",
+        loginPath: "/staff-auth/login"
+      },
+      children: [
+       
+        {
+          path: "",
+          name: "SuperAdminRestaurants",
+          component: () => import("@/pages/superAdmin/SuperAdminRestaurants.vue"),
+        },
+        {
+          path: "users",
+          name: "UsersSuperAdmin",
+          component: () => import("@/pages/superAdmin/SuperAdminUsers.vue"),
+        },
+        {
+          path: "usersManagement",
+          name: "usersManagementSuperAdmin",
+          component: () => import("@/pages/superAdmin/SuperUsersManagement.vue"),
+        },
+      ],
+    },
   ],
 });
 
 router.beforeEach((to) => {
   const token = Cookies.get("accessToken");
   const role = Cookies.get("role");
-  
+
+
 
   if (to.meta.requiresAuth && !token) {
     if (to.meta.authType === "staff") {

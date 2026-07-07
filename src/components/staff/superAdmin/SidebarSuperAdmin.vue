@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Utensils, EllipsisVertical } from "lucide-vue-next";
+import {  EllipsisVertical } from "lucide-vue-next";
 import Cookies from "js-cookie";
 import { ref } from "vue";
 import { logOut } from "@/service/auth/AuthService";
-import { useQueryService } from "@/service/unauthenticated/useQueryService";
 import { useRouter } from "vue-router";
 // const role = Cookies.get("role");
 
@@ -12,27 +11,19 @@ import { useRouter } from "vue-router";
 const router = useRouter()
 const name = Cookies.get("name");
 const avatar = Cookies.get("name")?.[0].toUpperCase() ?? "";
-const restaurantId = localStorage.getItem("restaurantId")
 const menuOpen = ref(false);
-const {useRestaurantById} = useQueryService()
-const {data:restaurantData} = useRestaurantById(restaurantId??'')
-console.log(restaurantData.value)
 const menus = [
   {
-    name: "Bosh Sahifa",
-    to: "/admin",
+    name: "Restaurants",
+    to: "/superAdmin",
   },
   {
-    name: "Mahsulotlar",
-    to: "/admin/products",
+    name: "Users",
+    to: "/superAdmin/users",
   },
   {
-    name: "Orders",
-    to: "/admin/orders",
-  },
-  {
-    name: "Restarant",
-    to: "/admin/restaurant",
+    name: "Activate",
+    to: "/superAdmin/usersManagement",
   },
 ];
 
@@ -46,13 +37,6 @@ const handleLogOut = () => {
   <div
     class="bg-white shadow-xl rounded-2xl shadow-slate-200 border border-slate-200 p-5 h-full flex flex-col justify-between">
     <div class="flex flex-col gap-y-5">
-      <!-- Logo -->
-      <div class="flex items-center gap-x-2 px-2 py-3">
-        <div class="p-2 bg-orange-300 rounded-xl">
-          <Utensils class="text-orange-700" />
-        </div>
-        <h1 class="font-bold text-lg">{{ restaurantData?.name }}</h1>
-      </div>
 
       <div class="w-60 flex flex-col gap-y-2">
         <RouterLink v-for="menu in menus" :key="menu.name" :to="menu.to"
@@ -76,14 +60,10 @@ const handleLogOut = () => {
         <EllipsisVertical />
       </button>
 
-      <div v-if="menuOpen" class="absolute -top-30 right-0 bg-white shadow-lg rounded-lg p-3 ">
+      <div v-if="menuOpen" class="absolute -top-20 right-0 bg-white shadow-lg rounded-lg p-3 ">
         <button @click="handleLogOut"
           class="w-full flex cursor-pointer  items-center   transition hover:bg-slate-100 px-2  py-2  font-medium">
           <p class="text-sm">Profildan Chiqish</p>
-        </button>
-        <button @click="handleLogOut"
-          class="w-full flex cursor-pointer  items-center  transition hover:bg-slate-100 px-2 py-2  font-medium">
-          <p class="text-sm">Restarant Yaratish</p>
         </button>
       </div>
     </div>

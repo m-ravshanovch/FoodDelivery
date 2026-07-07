@@ -3,17 +3,19 @@ import { ref } from "vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
-import { Upload} from "lucide-vue-next";
+import { Upload } from "lucide-vue-next";
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 import type { LeafletMouseEvent } from "leaflet";
 import { useQueryServiceAuth } from "@/service/authenticated/useQueryServiceAuth";
 import { useQueryService } from "@/service/unauthenticated/useQueryService";
-
+import { useRouter } from "vue-router";
 const { useCategories } = useQueryService()
 const { data: categoryData } = useCategories()
 const imagePreview = ref("");
 const mapUrl = ref("");
 
+
+const router = useRouter()
 const { useCreateRestaurant } = useQueryServiceAuth();
 const { mutateAsync: createRestaurant } = useCreateRestaurant();
 const validationSchema = toTypedSchema(
@@ -33,8 +35,8 @@ const validationSchema = toTypedSchema(
 );
 
 const selectedFile = ref<File | null>(null);
-
-
+const loading = ref(false)
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 
 const handleImage = (event: Event) => {
@@ -80,23 +82,35 @@ const handleClick = (e: LeafletMouseEvent) => {
 
 
 const onSubmit = async (values: any) => {
-    const formData = new FormData();
 
-    formData.append("name", values.name);
-    formData.append("description", values.description);
-    formData.append("address", mapUrl.value);
+    loading.value=true
+    try {
 
-    values.categories.forEach((id: number) => {
-        formData.append("categories", String(id));
-    });
+        const formData = new FormData();
 
-    if (selectedFile.value) {
-        formData.append("restaurant_img", selectedFile.value);
+        formData.append("name", values.name);
+        formData.append("description", values.description);
+        formData.append("address", mapUrl.value);
+
+        values.categories.forEach((id: number) => {
+            formData.append("categories", String(id));
+        });
+
+        if (selectedFile.value) {
+            formData.append("restaurant_img", selectedFile.value);
+        }
+
+        
+        console.log(formData);
+
+        await createRestaurant(formData);
+
+        await delay(2000)
+        router.push('/admin')
+    }catch(error){
+      console.log(error)
     }
-
-    console.log(formData);
-
-    await createRestaurant(formData);
+    
 };
 
 
@@ -104,11 +118,10 @@ const onSubmit = async (values: any) => {
 </script>
 
 <template>
-    <div class="p-5 bg-green-500">
-        <p class="font-serif text-xl font-bold text-white">Restaurant Yaratish</p>
+    <div class="p-5 ">
+        <p class="font-serif text-xl font-bold text-black">Restaurant Yaratish</p>
     </div>
-    <Form :validation-schema="validationSchema" @submit="onSubmit"
-        class=" border border-slate-200 p-5 rounded-xl ">
+    <Form :validation-schema="validationSchema" @submit="onSubmit" class=" border border-slate-200 p-5 rounded-xl ">
         <div class="grid grid-cols-1  gap-4">
             <div class="flex flex-col gap-y-2 justify-between">
                 <div class="w-full">
@@ -134,7 +147,7 @@ const onSubmit = async (values: any) => {
                     </div>
 
                     <div class=" w-full flex  flex-col  border-dashed border-green-600 p-2 rounded-2xl">
-                         <label class="block text-sm mb-2 font-medium">
+                        <label class="block text-sm mb-2 font-medium">
                             Restaurant image
                         </label>
                         <label
@@ -192,12 +205,13 @@ const onSubmit = async (values: any) => {
         </div>
         <div class="mt-5 flex justify-between">
             <RouterLink to="/staff-auth/loginRestaurant" type="submit"
-                class="bg-blue-500 text-sm text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors">
+                class=" text-sm text-green-600 font-bold border border-green-700 py-2 px-4 rounded-md hover:bg-green-600 hover:text-white transition-colors">
                 Orqaga
             </RouterLink>
             <button type="submit"
-                class="bg-green-500 text-sm text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors">
-                Restaurant yaratish
+                class="bg-green-500 text-sm cursor-pointer text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors">
+                <p v-if="loading">Creating...</p>
+                <p v-else>Restaurant yaratish</p>
             </button>
         </div>
     </Form>

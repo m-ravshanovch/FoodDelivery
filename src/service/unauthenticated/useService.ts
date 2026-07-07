@@ -8,7 +8,6 @@ export const useService = {
     getAllProductsByResturantId: (restaurant_id: string) => api.get(`/api/restaurants/${restaurant_id}/menu`),
     getAllProductsByCategoryAndRestaurantId: (restaurant_id: string, category_menu_name: string) => api.get(`/api/restaurants/${restaurant_id}/menu_categories/${category_menu_name}/items`),
 
-
     //Resturants
     getAllResturants: () => api.get("/api/restaurants"),
     getResturantById: (uuid: string) => api.get(`/api/restaurant/${uuid}`),
@@ -30,6 +29,39 @@ export const useService = {
     getAllCategories: () => api.get("/api/general-category"),
 
     //Users
+    getInActiveUsers: (
+        page: number,
+        limit: number,
+        roleValue?: string,
+        searchValue?:string
+    ) =>
+        publicAuthApi.get("/users", {
+            params: {
+                is_active: false,
+                page,
+                limit,
+                ...(roleValue ? { role: roleValue } : {}),
+                ...(searchValue ? { search: searchValue } : {}),
+            },
+    }),
+
+    getActiveUsers: (
+        page: number,
+        limit: number,
+        roleValue?: string,
+        searchValue?:string
+    ) =>
+        publicAuthApi.get("/users", {
+            params: {
+                is_active: true,
+                page,
+                limit,
+                ...(roleValue ? { role: roleValue } : {}),
+                ...(searchValue ? { search: searchValue } : {}),
+            },
+    }),
+
+    
     getUserById: () => authApi.get(`/auth/me`),
 
     //LogOut 
@@ -37,5 +69,7 @@ export const useService = {
 
     //Categories
     getCategoriesByResturantId: (restaurant_id: string) => api.get(`/api/restaurants/${restaurant_id}/menucategory`),
+
+    //
 
 }

@@ -95,7 +95,7 @@ onBeforeUnmount(() => {
           enter-from-class="opacity-0 -translate-y-2" enter-to-class="opacity-100 translate-y-0"
           leave-active-class="transition-all duration-150 ease-in" leave-from-class="opacity-100 translate-y-0"
           leave-to-class="opacity-0 -translate-y-2">
-          <div v-if="profileVisible" class="absolute right-0 top-12 z-50">
+          <div v-if="profileVisible" class="absolute  right-0 top-12 z-50">
             <ProfileMenu />
           </div>
         </Transition>

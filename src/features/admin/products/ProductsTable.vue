@@ -49,7 +49,7 @@ console.log(productsData.value)
                         </td>
 
                         <td class="p-2">
-                            <img :src="food.image" :alt="food.name" class="w-40 h-20 object-cover rounded-2xl">
+                            <img :src="food.img_product" :alt="food.name" class="w-40 h-20 object-cover rounded-2xl">
                         </td>
 
                         <td>{{ food.name }}</td>

@@ -4,7 +4,7 @@
 
 <template>
     <div>
-         Admin Statistics Page
+        History Curier
     </div>
 </template>
 

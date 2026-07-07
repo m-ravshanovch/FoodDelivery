@@ -13,7 +13,7 @@ const id = String(route.params.id);
 
 
 
-
+console.log(id)
 const { useProductsByRestaurantId, useRestaurantById, useCategoriesByRestaurantId, useAllProductsByCategoryAndRestaurantId } = useQueryService()
 const selectedCategory = ref("");
 const {
@@ -109,8 +109,9 @@ console.log("Restaurant page:", productsData.value)
                 <ClipLoader :loading="true" color="#16a34a" />
             </div>
 
-            <div v-else class="overflow-y-auto h-full no-scrollbar border border-green-100 py-3 rounded-xl bg-white px-2">
-                <div class="flex flex-col overflow-y-auto">
+            <div v-else
+                class="overflow-y-auto h-full no-scrollbar border border-green-100 py-3 rounded-xl bg-white px-2">
+                <div v-if="products?.length > 0" class="flex flex-col overflow-y-auto">
                     <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5 gap-y-10">
                         <RouterLink to="" v-for="food in products" :key="food.id"
                             class="shadow-md shadow-slate-100 rounded-2xl flex flex-col justify-between">
@@ -162,11 +163,27 @@ console.log("Restaurant page:", productsData.value)
                     </div>
 
                 </div>
+                <div v-else class="flex-1 flex flex-col items-center justify-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mb-3 text-gray-300" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
+                    </svg>
+
+                    <p class="text-lg font-semibold">
+                        Mahsulotlar topilmadi
+                    </p>
+
+                    <p class="text-sm text-gray-400 mt-1">
+                        Mahsulotlar mavjud emas
+                    </p>
+                </div>
+
             </div>
+
         </div>
         <div class="hidden lg:block">
-            <ShopCart 
-            :value="id"  />
+            <ShopCart :value="id" />
         </div>
     </div>
 </template>

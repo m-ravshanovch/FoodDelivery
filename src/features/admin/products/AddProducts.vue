@@ -5,11 +5,15 @@ import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { Upload, ImageIcon } from "lucide-vue-next";
 import { useQueryService } from "@/service/unauthenticated/useQueryService";
-
+import { useQueryServiceAuth } from "@/service/authenticated/useQueryServiceAuth";
 const restaurantId = localStorage.getItem("restaurantId")
 const imagePreview = ref("");
 const { useCategoriesByRestaurantId } = useQueryService()
 const { data: categoryData } = useCategoriesByRestaurantId(restaurantId ?? '')
+const { useCreateProduct } = useQueryServiceAuth()
+const { mutateAsync } = useCreateProduct()
+const loading = ref(false)
+const delay =(ms:number)=>new Promise((resolve)=>setTimeout(resolve,ms))
 const validationSchema = toTypedSchema(
     z.object({
         restaurantUniqueId: z
@@ -56,13 +60,46 @@ const handleImage = (event: Event) => {
     }
 };
 
-const onSubmit = (values: any) => {
-    const formData = {
-        ...values,
-        image: selectedFile.value,
-    };
+const onSubmit = async (values: any) => {
+    loading.value=true
+    try {
+        const formData = new FormData();
 
-    console.log(formData);
+        formData.append("restaurant_uuid", values.restaurantUniqueId);
+        formData.append("name", values.name);
+        formData.append("price", values.price);
+
+        if (values.newPrice) {
+            formData.append("new_price", values.newPrice);
+        }
+
+        if (values.discount) {
+            formData.append("discount", values.discount);
+        }
+
+        if (values.promotion) {
+            formData.append("promotion", values.promotion);
+        }
+
+        formData.append("description", values.description);
+        formData.append("delivery_time", values.deliveryTime);
+        formData.append("discount_status", String(values.status));
+
+        values.categories.forEach((id: number) => {
+            formData.append("category", String(id));
+        });
+
+        if (selectedFile.value) {
+            formData.append("img_product", selectedFile.value);
+        }
+
+        await delay(1000)
+        await mutateAsync(formData);
+    } catch (err) {
+        console.log(err);
+    } finally{
+        loading.value=false
+    }
 };
 </script>
 
@@ -79,7 +116,7 @@ const onSubmit = (values: any) => {
                 </p>
             </div>
 
-            <Form :validation-schema="validationSchema" :initial-values="{
+            <Form v-slot="{errors}" :validation-schema="validationSchema" :initial-values="{
                 restaurantUniqueId: restaurantId
             }" @submit="onSubmit" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- LEFT SIDE -->
@@ -147,7 +184,7 @@ const onSubmit = (values: any) => {
                                 class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:border-green-500" />
                         </div>
                     </div>
-                    <div class="flex w-full ">
+                    <div class="flex w-full gap-x-2">
                         <div class="w-full">
                             <label class="block mb-2 font-medium">
                                 Categories
@@ -170,15 +207,38 @@ const onSubmit = (values: any) => {
                             <ErrorMessage name="categories" class="text-red-500 text-sm" />
                         </div>
 
-                        <div class=" w-full">
-                            <label class="block mb-2 font-medium">
-                                Yetkazish vaqti
-                            </label>
+                        <div class="flex flex-col w-full gap-y-5">
+                            <div class=" w-full">
+                                <label class="block mb-2 font-medium">
+                                    Yetkazish vaqti
+                                </label>
 
-                            <Field name="deliveryTime" placeholder="20 min"
-                                class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:border-green-500" />
+                                <Field name="deliveryTime" placeholder="20 min"
+                                    class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:border-green-500" />
 
-                            <ErrorMessage name="deliveryTime" class="text-red-500 text-sm" />
+                                <ErrorMessage name="deliveryTime" class="text-red-500 text-sm" />
+                            </div>
+
+                            <div class="w-full">
+                                <label class="block mb-2 font-medium">
+                                    Discount Status
+                                </label>
+
+                                <div class="flex items-center gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <Field name="discountStatus" type="radio" :value="true" />
+                                        <span>Active</span>
+                                    </label>
+
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <Field name="discountStatus" type="radio" :value="false" />
+                                        <span>Inactive</span>
+                                    </label>
+                                </div>
+
+                                <ErrorMessage name="discountStatus" class="text-red-500 text-sm" />
+                            </div>
+
                         </div>
                     </div>
 
@@ -202,7 +262,6 @@ const onSubmit = (values: any) => {
                     </div>
                 </div>
 
-                <!-- RIGHT SIDE -->
                 <div>
                     <label class="block mb-2 font-medium">
                         Mahsulot rasmi
@@ -247,13 +306,14 @@ const onSubmit = (values: any) => {
                     </div>
                 </div>
 
-                <!-- BUTTON -->
                 <div class="lg:col-span-2 flex justify-end">
                     <button type="submit"
                         class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-all">
-                        Mahsulot qo'shish
+                        <p v-if="loading">Creating..</p>
+                        <p v-else>Mahsulot qo'shish</p>
                     </button>
                 </div>
+                {{ errors }}
             </Form>
         </div>
     </div>

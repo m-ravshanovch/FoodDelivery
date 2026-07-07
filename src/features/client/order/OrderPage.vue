@@ -2,18 +2,45 @@
 import { useCartStore } from '@/stores/card';
 import { storeToRefs } from 'pinia';
 import { useQueryService } from '@/service/unauthenticated/useQueryService';
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 import { computed, ref } from 'vue';
 import { useQueryServiceAuth } from '@/service/authenticated/useQueryServiceAuth';
 import { SkewLoader } from 'vue-spinner';
-
+import type { LeafletMouseEvent } from 'leaflet';
+import Cookies from 'js-cookie';
 const { useCreateOrder } = useQueryServiceAuth();
 const cartStore = useCartStore()
-
+const mapUrl = ref("");
 const restaurantId = localStorage.getItem('restaurantId');
 const { useRestaurantById } = useQueryService();
 const { cart, totalPrice, totalItems } = storeToRefs(cartStore)
-const { data: restaurantData } = useRestaurantById(restaurantId??'');
+const { data: restaurantData } = useRestaurantById(restaurantId ?? '');
+const zoom = ref(13);
 
+const center = ref<[number, number]>([
+    41.3111,
+    69.2797,
+]);
+
+const marker = ref<[number, number]>([
+    41.3111,
+    69.2797,
+]);
+const handleClick = (e: LeafletMouseEvent) => {
+    const lat = e.latlng.lat;
+    const lng = e.latlng.lng;
+
+    marker.value = [lat, lng];
+
+    console.log({
+        latitude: lat,
+        longitude: lng,
+    });
+
+    mapUrl.value = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=18/${lat}/${lng}`;
+
+    console.log(mapUrl.value);
+};
 
 
 const { mutateAsync: createOrder } = useCreateOrder();
@@ -39,6 +66,9 @@ const handleMove = async () => {
         restaurantName: restaurantData?.value.name,
         restaurantId: localStorage.getItem("restaurantId"),
         items: orderItems.value,
+        deliveryAddress:mapUrl?.value,
+        customerFullName: Cookies.get("name"),
+        restaurantAddress : restaurantData?.value.address
     };
 
     console.log("Order payload:", payload);
@@ -141,9 +171,14 @@ const handleMove = async () => {
                         <p class="font-bold">{{ totalPrice }} so'm</p>
                     </div>
                 </div>
+                <LMap style="height:200px" class="z-2" :zoom="zoom" :center="center" @click="handleClick">
+                    <LTileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+                    <LMarker :lat-lng="marker" />
+                </LMap>
                 <div class="flex flex-col gap-y-2">
                     <p class="text-md font-bold">Restoran:</p>
-                    <div >
+                    <div>
                         <p class="text-zinc-400 font-bold uppercase">{{ restaurantData?.name }}</p>
                     </div>
                 </div>

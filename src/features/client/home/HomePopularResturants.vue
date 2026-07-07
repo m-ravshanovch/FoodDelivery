@@ -21,6 +21,8 @@ const {
   isLoading: loadingAll,
 } = useRestaurants();
 
+console.log("restaran:",allRestaurants.value)
+
 const {
   data: categoryRestaurants,
   isLoading: loadingCategory,

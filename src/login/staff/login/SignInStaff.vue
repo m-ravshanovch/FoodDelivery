@@ -5,7 +5,7 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { loginUser } from "@/service/auth/AuthService";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
-
+import Cookies from "js-cookie";
 const loading = ref(false)
 const validationSchema = toTypedSchema(
     z.object({
@@ -22,10 +22,17 @@ const router = useRouter()
 const delay = (ms:number)=>new Promise((resolve)=>setTimeout(resolve,ms))
 const onSubmit =async (values: any) => {
     loading.value=true
-    await delay(1000)
     try {
-        loginUser(values)
-        router.push("/staff-auth/loginRestaurant")
+         await delay(1000)
+         await loginUser(values)
+         const role = Cookies.get("role"); 
+        if(role==="RESTAURANT_OWNER"){
+            router.push("/staff-auth/loginRestaurant")
+        } else if (role==="COURIER"){
+            router.push("/curier")
+        } else if(role==="ADMIN"){
+            router.push("/superAdmin")
+        }
     } catch (error) {
         console.log("Error:", error);
 
@@ -56,7 +63,10 @@ const onSubmit =async (values: any) => {
             </div>
             <div>
                 <button type="submit"
-                    class="cursor-pointer py-2 hover:bg-green-700 transition-all duration-300 bg-green-600 w-full text-white font-bold rounded-md">submit</button>
+                    class="cursor-pointer py-2 hover:bg-green-700 transition-all duration-300 bg-green-600 w-full text-white font-bold rounded-md">
+                    <p v-if="loading">Signin..</p>
+                    <p v-else>submit</p>
+                </button>
             </div>
         </Form>
     </div>

@@ -3,6 +3,7 @@ import { computed, type Ref } from "vue";
 import { useService } from "./useService";
 
 export const useQueryService = () => {
+
   const useRestaurants = () =>
     useQuery({
       queryKey: ["restaurants"],
@@ -90,6 +91,40 @@ export const useQueryService = () => {
 
       retry: false,
     });
+
+
+  const useInActiveUsers = (page: number, limit: number, roleValue: Ref<string>, searchValue: Ref<string>) =>
+    useQuery({
+      queryKey: ["users", page, limit, roleValue, searchValue],
+
+
+      queryFn: async () => {
+        const response = await useService.getInActiveUsers(
+          page, limit, roleValue.value, searchValue.value
+        );
+
+        return response.data;
+      },
+
+      retry: false,
+    });
+  const useActiveUsers = (page: number, limit: number, roleValue: Ref<string>, searchValue: Ref<string>) =>
+    useQuery({
+      queryKey: ["users", page, limit, roleValue, searchValue],
+
+
+      queryFn: async () => {
+        const response = await useService.getActiveUsers(
+          page, limit, roleValue.value, searchValue.value
+        );
+
+        return response.data;
+      },
+
+      retry: false,
+    });
+
+
   const useAllProductsByCategoryAndRestaurantId = (category: Ref<string>, restaurant_id: string) =>
     useQuery({
       queryKey: ["productsByCategoryAndRestaurantId", category, restaurant_id],
@@ -108,6 +143,7 @@ export const useQueryService = () => {
       retry: false,
     });
 
+  
   return {
     useRestaurants,
     useCategories,
@@ -117,6 +153,8 @@ export const useQueryService = () => {
     useCategoriesByRestaurantId,
     useRestaurantsByCategory,
     useAllProductsByCategoryAndRestaurantId,
-    useRestaurantsByOwnerId
+    useRestaurantsByOwnerId,
+    useInActiveUsers,
+    useActiveUsers
   };
 };
