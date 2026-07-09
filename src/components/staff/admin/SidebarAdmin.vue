@@ -14,17 +14,13 @@ const name = Cookies.get("name");
 const avatar = Cookies.get("name")?.[0].toUpperCase() ?? "";
 const restaurantId = localStorage.getItem("restaurantId")
 const menuOpen = ref(false);
-const {useRestaurantById} = useQueryService()
-const {data:restaurantData} = useRestaurantById(restaurantId??'')
+const { useRestaurantById } = useQueryService()
+const { data: restaurantData } = useRestaurantById(restaurantId ?? '')
 console.log(restaurantData.value)
 const menus = [
   {
-    name: "Bosh Sahifa",
-    to: "/admin",
-  },
-  {
     name: "Mahsulotlar",
-    to: "/admin/products",
+    to: "/admin",
   },
   {
     name: "Orders",
@@ -40,6 +36,11 @@ const handleLogOut = () => {
   logOut();
   router.push('/staff-auth/login')
 };
+
+const handleCreateRestaurant = ()=>{
+  localStorage.removeItem("restaurantId")
+  router.push("/staff-auth/loginRestaurant")
+}
 </script>
 
 <template>
@@ -77,14 +78,15 @@ const handleLogOut = () => {
       </button>
 
       <div v-if="menuOpen" class="absolute -top-30 right-0 bg-white shadow-lg rounded-lg p-3 ">
+        <button @click="handleCreateRestaurant"
+          class="w-full flex cursor-pointer  items-center  transition hover:bg-slate-100 px-2 py-2  font-medium">
+          <p class="text-sm">Restarant Yaratish</p>
+        </button>
         <button @click="handleLogOut"
           class="w-full flex cursor-pointer  items-center   transition hover:bg-slate-100 px-2  py-2  font-medium">
           <p class="text-sm">Profildan Chiqish</p>
         </button>
-        <button @click="handleLogOut"
-          class="w-full flex cursor-pointer  items-center  transition hover:bg-slate-100 px-2 py-2  font-medium">
-          <p class="text-sm">Restarant Yaratish</p>
-        </button>
+
       </div>
     </div>
 

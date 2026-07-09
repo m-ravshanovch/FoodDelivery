@@ -8,6 +8,9 @@ import { useQueryServiceAuth } from '@/service/authenticated/useQueryServiceAuth
 import { SkewLoader } from 'vue-spinner';
 import type { LeafletMouseEvent } from 'leaflet';
 import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 const { useCreateOrder } = useQueryServiceAuth();
 const cartStore = useCartStore()
 const mapUrl = ref("");
@@ -84,7 +87,7 @@ const handleMove = async () => {
         cartStore.clearCart();
         localStorage.removeItem("restaurantId");
 
-        // router.push("/success");
+        router.push("/myOrders");
     } catch (error) {
         console.error(error);
     } finally {
@@ -163,7 +166,7 @@ const handleMove = async () => {
                     </p>
                 </div>
             </div>
-            <div class="bg-white w-80 h-fit flex shadow-xl shadow-slate-300 rounded-xl flex-col gap-y-5 p-4">
+            <div class="bg-white w-full md:w-80 h-fit flex shadow-xl shadow-slate-300 rounded-xl flex-col gap-y-5 p-4">
                 <div class="flex flex-col gap-y-2">
                     <p class="text-md font-bold">Buyurtmangiz:</p>
                     <div class="flex justify-between text-zinc-500">
@@ -194,7 +197,8 @@ const handleMove = async () => {
                 </div>
                 <button @click.prevent="handleMove"
                     class="w-full cursor-pointer bg-green-600 py-2 text-sm rounded-md font-bold text-white">
-                    Rasmiylashtirishga o'tish
+                    <p v-if="loading">Booking..</p>
+                    <p v-else>Rasmiylashtirishga o'tish</p>
                 </button>
             </div>
         </div>

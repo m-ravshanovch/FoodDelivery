@@ -5,12 +5,14 @@ const {useAvailableOrders,useMyInformation,useGetOrderByCourier} = useQueryServi
 const {data:AvailableOrders} = useAvailableOrders()
 console.log("Av Orders",AvailableOrders?.value)
 const {mutateAsync} = useGetOrderByCourier()
+
+
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString("en-US", {
-    month: "long", // January
-    day: "numeric", // 16
-    hour: "2-digit", // 17
-    minute: "2-digit", // 00
+    month: "long", 
+    day: "numeric", 
+    hour: "2-digit", 
+    minute: "2-digit", 
   });
 }
 const {data:myInformation} = useMyInformation()
@@ -20,7 +22,7 @@ const handelTakeOrder = async (id:number) =>{
         const payload = {
             courierId:myInformation?.value.user_id,
             orderId:id,
-            courierName:myInformation?.value    .name,
+            courierName:myInformation?.value.name,
             phoneNumber:myInformation?.value.phone_number
         }
         console.log("Payload:",payload)
@@ -33,9 +35,10 @@ const handelTakeOrder = async (id:number) =>{
 
 <template>
     <div class="flex flex-col gap-5">
-        <div v-for="order in AvailableOrders"
+        <div  v-for="order in AvailableOrders"
             class="bg-white border flex flex-col gap-y-3  border-slate-200 p-3 rounded-2xl">
-            <div class="flex flex-col gap-5">
+            <div class="flex flex-col  gap-5">
+
                 <div class="flex gap-x-2">
                    <Clock/> <p>{{ formatDate(order.createdAt) }}</p>
                 </div>
@@ -58,9 +61,9 @@ const handelTakeOrder = async (id:number) =>{
                 </div>
             </div>
             <div class="flex gap-x-2 justify-end">
-                    <button @click="handelTakeOrder(order.orderId)"
-                        class="bg-green-600 px-3 py-1 w-full rounded-2xl text-white text-sm cursor-pointer">Buyurtmani Olish</button>
-              
+                    <button @click="handelTakeOrder(order.orderId)" class="bg-green-600 px-3 py-1 w-full rounded-2xl text-white text-sm cursor-pointer">
+                        Buyurtmani Olish
+                    </button>
             </div>
         </div>
 

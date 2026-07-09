@@ -17,7 +17,7 @@ const handleCreateCategory = async () => {
             restaurant: localStorage.getItem("restaurantId") ?? '',
             name: name.value
         }
-        
+        console.log("data:",data)
         await delay(1000)
         await mutateAsync(data)
         name.value=""
@@ -41,8 +41,8 @@ const { data: categories } = useCategoriesByRestaurantId(restaurantId ?? '')
 </script>
 
 <template>
-    <div class="bg-white p-4 shadow-xl shadow-slate-200 rounded-md border border-slate-200">
-        <div class="flex flex-col gap-y-4">
+    <div class=" p-4">
+        <div class="flex bg-white p-4 flex-col gap-y-4">
             <label for="category" class="text-sm font-bold">Menu Category Name</label>
             <div class="flex gap-x-2">
                 <input id="category" v-model="name" type="text" placeholder="Enter category name"
@@ -50,12 +50,12 @@ const { data: categories } = useCategoriesByRestaurantId(restaurantId ?? '')
                 <button @click="handleCreateCategory"
                     class="bg-green-500 text-white cursor-pointer hover:bg-green-600 transition-all duration-300 px-4 py-1 rounded">
                     <p v-if="loading">Creating..</p>
-                    <p v-else>Create Category</p>
+                    <p v-else>Add</p>
                 </button>
             </div>
         </div>
         <div class="flex flex-col mt-3">
-            <div v-if="categories?.length > 0" class="flex gap-x-2">
+            <div v-if="categories?.length > 0" class="flex gap-x-2 overflow-x-auto">
                 <div  v-for="category in categories" :key="category.id" class="text-green-600 px-3 flex items-center gap-x-2 rounded-md border border-green-700">
                     <p>{{ category.name }}</p> 
                     <button @click="handleDeleteCategory(category.id)" class="py-1 items-center text-red-700 cursor-pointer">X</button>

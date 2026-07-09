@@ -29,7 +29,7 @@ const handleAccept =async (id:number) =>{
 
 <template>
     <div class="border flex flex-col  border-slate-300 rounded-md  bg-white">
-        <div class="flex justify-between bg-slate-500 text-white items-center px-2 py-2">
+        <div class="flex justify-between rounded-t-md bg-slate-500 text-white items-center px-2 py-2">
             <div>
                 <p class="font-bold">Requested Users</p>
             </div>

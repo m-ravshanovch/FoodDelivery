@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 import Cookies from "js-cookie";
 const loading = ref(false)
+const errorMessage = ref('')
 const validationSchema = toTypedSchema(
     z.object({
         email: z
@@ -19,23 +20,35 @@ const validationSchema = toTypedSchema(
 
 );
 const router = useRouter()
-const delay = (ms:number)=>new Promise((resolve)=>setTimeout(resolve,ms))
-const onSubmit =async (values: any) => {
-    loading.value=true
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const onSubmit = async (values: any) => {
+    loading.value = true
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+    Cookies.remove("role");
+    Cookies.remove("userId");
+    Cookies.remove("name");
+    localStorage.removeItem("restaurantId");
     try {
-         await delay(1000)
-         await loginUser(values)
-         const role = Cookies.get("role"); 
-        if(role==="RESTAURANT_OWNER"){
+        await delay(1000)
+        await loginUser(values)
+        const role = Cookies.get("role");
+        if (role === "RESTAURANT_OWNER") {
             router.push("/staff-auth/loginRestaurant")
-        } else if (role==="COURIER"){
+        } else if (role === "COURIER") {
             router.push("/curier")
-        } else if(role==="ADMIN"){
+        } else if (role === "ADMIN") {
             router.push("/superAdmin")
+        }else {
+            errorMessage.value='',
+            errorMessage.value = "Staff uchun avval ro'yhattan o'tin"
         }
-    } catch (error) {
+    } catch (error: any) {
+        errorMessage.value = error.message
         console.log("Error:", error);
 
+    } finally {
+        loading.value = false
     }
 }   
 </script>
@@ -43,12 +56,13 @@ const onSubmit =async (values: any) => {
 <template>
     <div class="flex flex-col justify-center items-center h-screen">
 
-        <Form :validation-schema="validationSchema" @submit="onSubmit" class="flex flex-col gap-y-3 w-90 p-2">
+        <Form :validation-schema="validationSchema" @submit="onSubmit" class="flex flex-col gap-y-3 w-full md:w-90 p-2">
             <div>
                 <p class="font-bold text-2xl">Nice! Welcome back</p>
             </div>
             <div class="flex flex-col">
-                <Field name="email" type="email" placeholder="email" class="py-1 px-2 outline-green-600 border border-slate-300" />
+                <Field name="email" type="email" placeholder="email"
+                    class="py-1 px-2 outline-green-600 border border-slate-300" />
                 <ErrorMessage name="email" class="text-red-500 text-sm" />
             </div>
             <div class="flex flex-col">
@@ -61,6 +75,9 @@ const onSubmit =async (values: any) => {
                         class="underline text-blue-600">register</RouterLink>
                 </p>
             </div>
+            <p class="text-sm text-red-700">
+                {{ errorMessage }}
+            </p>
             <div>
                 <button type="submit"
                     class="cursor-pointer py-2 hover:bg-green-700 transition-all duration-300 bg-green-600 w-full text-white font-bold rounded-md">

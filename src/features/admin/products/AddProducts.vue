@@ -105,7 +105,7 @@ const onSubmit = async (values: any) => {
 
 <template>
     <div class="mx-auto ">
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-lg shadow-slate-100 p-6">
+        <div class="bg-white  p-6">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-slate-800">
                     Yangi Mahsulot Qo'shish
@@ -116,10 +116,9 @@ const onSubmit = async (values: any) => {
                 </p>
             </div>
 
-            <Form v-slot="{errors}" :validation-schema="validationSchema" :initial-values="{
+            <Form  :validation-schema="validationSchema" :initial-values="{
                 restaurantUniqueId: restaurantId
             }" @submit="onSubmit" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- LEFT SIDE -->
                 <div class="space-y-5">
                     <div>
                         <label class="block mb-2 font-medium">
@@ -306,14 +305,13 @@ const onSubmit = async (values: any) => {
                     </div>
                 </div>
 
-                <div class="lg:col-span-2 flex justify-end">
+                <div class="lg:col-span-2 flex justify-center md:justify-end">
                     <button type="submit"
                         class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-all">
                         <p v-if="loading">Creating..</p>
                         <p v-else>Mahsulot qo'shish</p>
                     </button>
                 </div>
-                {{ errors }}
             </Form>
         </div>
     </div>

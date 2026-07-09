@@ -14,7 +14,7 @@ const router= useRouter()
 const menuList = [
     {
         "name": "Buyurtmalarim",
-        "to": "/orderPage",
+        "to": "/myOrders",
         "icon": ClockArrowUp
     },
     {

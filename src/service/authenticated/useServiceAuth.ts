@@ -5,7 +5,7 @@ import { authApi } from "@/api/auth.api"
 export const useServiceAuth = {
     //Orders
     getAllOrders:()=>orderApi.get("/orders"),
-    getAllOrdersByUserId:(userId:string)=>orderApi.get(`/${userId}`),
+    getAllOrdersByCustomerId:(customer_id:number)=>orderApi.get(`/orders/customer/${customer_id}`),
     getOrderById:(id:number)=>orderApi.get(`/${id}`),
     getAllOrdersByRestaurantId:(restaurantId:string)=>orderApi.get(`/orders/restaurant/${restaurantId}`),
     createOrder:(payload:any)=>orderApi.post("/orders",payload),
@@ -20,7 +20,7 @@ export const useServiceAuth = {
     
     //Curiers
     getAvailableOrders:()=>orderApi.get("/courier/available-orders"),
-    getOrderByCurier:(payload:any)=>orderApi.get("/courier/assign-to-order",payload),
+    getOrderByCurier:(payload:any)=>orderApi.post("/courier/assign-to-order",payload),
 
     //Restaurant
     createRestaurant:(payload:any)=>restaurantApi.post("/api/restaurants",payload),

@@ -4,7 +4,7 @@ import CreateRestaurant from '@/features/admin/restaurant/CreateRestaurant.vue';
 
 
 <template>
-    <div>
+    <div class="h-screen overflow-y-auto">
        <CreateRestaurant/>
     </div>
 </template>

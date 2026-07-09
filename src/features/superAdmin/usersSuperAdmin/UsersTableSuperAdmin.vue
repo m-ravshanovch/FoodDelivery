@@ -39,10 +39,26 @@ const prevPage = () => {
 
 <template>
     <div class="border flex flex-col   border-slate-300 rounded-md  bg-white">
-        <div class="flex justify-between rounded-t-md  bg-slate-500 items-center px-2 py-2">
+        <div class="flex flex-col md:flex-row justify-between rounded-t-md  bg-slate-500 md:items-center px-2 py-2">
             <div class="flex gap-x-5 text-white">
                 <p class="font-bold  text-lg">Users</p>
-                <div class="flex items-center gap-2 ">
+            </div>
+
+            <div class="flex flex-col gap-y-3 md:flex-row gap-x-5">
+                <select v-model="roleValue" name="" id="" class="outline-none cursor-pointer text-white">
+                    <option class="text-black cursor-pointer" value="">Roleni tanlang</option>
+                    <option class="text-black cursor-pointer" value="COURIER">Courier</option>
+                    <option class="text-black cursor-pointer" value="RESTAURANT_OWNER">Restaurant owner</option>
+                </select>
+                <div class="flex items-center border text-white px-2 gap-x-2 rounded-md border-slate-300 ">
+                    <Search :size="18" class="" />
+                    <input v-model="searchValue" type="text" class="w-full  outline-none py-1" placeholder="Search..">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="flex justify-between px-2 items-center gap-2 ">
+                <div class="flex">
                     <button @click="prevPage" :disabled="pages.page === 1">
                         &lt;
                     </button>
@@ -52,25 +68,12 @@ const prevPage = () => {
                     <button @click="nextPage" :disabled="pages.page === totalPages">
                         &gt;
                     </button>
-
-                    <select v-model="pages.limit">
-                        <option v-for="item in limits" :key="item" :value="item">
-                            {{ item }}
-                        </option>
-                    </select>
                 </div>
-            </div>
-
-            <div class="flex gap-x-5">
-                <select v-model="roleValue" name="" id="" class="outline-none cursor-pointer text-white">
-                    <option class="text-black cursor-pointer" value="">Roleni tanlang</option>
-                    <option class="text-black cursor-pointer" value="COURIER">Courier</option>
-                    <option class="text-black cursor-pointer" value="RESTAURANT_OWNER">Restaurant owner</option>
+                <select v-model="pages.limit" class="outline-none">
+                    <option v-for="item in limits" :key="item" :value="item" class="text-black">
+                        {{ item }}
+                    </option>
                 </select>
-                <div class="flex items-center border bg-white px-2 gap-x-2 rounded-md border-slate-300 ">
-                    <Search :size="18" class="" />
-                    <input v-model="searchValue" type="text" class="w-full  outline-none py-1" placeholder="Search..">
-                </div>
             </div>
         </div>
         <div class=" overflow-x-auto">

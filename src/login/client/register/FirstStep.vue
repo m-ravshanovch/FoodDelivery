@@ -61,7 +61,6 @@ onUnmounted(() => {
     clearInterval(timer);
   }
 });
-
 const handleGetCode = async (email: string) => {
 
   if (!email) {
@@ -91,6 +90,7 @@ const handleGetCode = async (email: string) => {
 };
 
 const handleSubmitCode = async (values: any) => {
+  errorMessage.value=''
   await delay(1000)
   loadingMove.value = true
   try {
@@ -99,8 +99,9 @@ const handleSubmitCode = async (values: any) => {
     console.log("Verified Successfully");
     console.log("values:", values);
     router.push("/auth/register/1");
-  } catch (error) {
-    console.log("Through:", error);
+  } catch (error:any) {
+    console.log("Through:", error.message);
+    errorMessage.value = error.response?.data.message
   }
 };
 </script>
@@ -133,7 +134,7 @@ const handleSubmitCode = async (values: any) => {
               <p v-else> {{ timeLeft > 0 ? formattedTime : "Get" }}</p>
             </button>
           </div>
-
+            
           <ErrorMessage name="email" class="text-red-500 text-sm mt-1" />
         </div>
 
@@ -150,7 +151,9 @@ const handleSubmitCode = async (values: any) => {
             Login
           </RouterLink>
         </p>
-
+        <p class="text-sm text-red-700">
+           {{ errorMessage }}
+        </p>
         <button type="submit"
           class="rounded-md cursor-pointer bg-green-600 py-2 font-bold text-white hover:bg-green-700 transition">
           <p v-if="loadingMove">Moving..</p>

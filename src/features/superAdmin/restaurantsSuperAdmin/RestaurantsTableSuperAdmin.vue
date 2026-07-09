@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { EllipsisVertical, Search, MapPin, Trash, Pencil } from 'lucide-vue-next';
+import { EllipsisVertical,  MapPin, Trash, Pencil } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useQueryService } from '@/service/unauthenticated/useQueryService';
 import { useQueryServiceAuth } from '@/service/authenticated/useQueryServiceAuth';
-const searchValue = ref("")
 
 const { useRestaurants } = useQueryService()
 const { useDeleteRestaurant } = useQueryServiceAuth()
@@ -31,16 +30,9 @@ const handleDelete = async (uuid: string) => {
 
 <template>
     <div class="border flex flex-col   border-slate-300 rounded-md  bg-white">
-        <div class="flex justify-between rounded-t-md  bg-slate-500 items-center px-2 py-2">
+        <div class="flex  justify-between rounded-t-md  bg-slate-500 md:items-center px-2 py-2">
             <div class="flex gap-x-5 text-white">
                 <p class="font-bold  text-lg">Restaurants</p>
-            </div>
-
-            <div class="flex gap-x-5">
-                <div class="flex items-center border bg-white px-2 gap-x-2 rounded-md border-slate-300 ">
-                    <Search :size="18" class="" />
-                    <input v-model="searchValue" type="text" class="w-full  outline-none py-1" placeholder="Search..">
-                </div>
             </div>
         </div>
         <div class=" overflow-x-auto">

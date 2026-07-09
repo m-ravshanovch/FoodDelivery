@@ -13,7 +13,7 @@ console.log(productsData.value)
 </script>
 
 <template>
-    <div class="px-2 shadow-md shadow-green-200 flex flex-col gap-y-4 ">
+    <div class="px-2  flex flex-col gap-y-4 ">
         <div
             class="bg-white py-2 shadow-md shadow-green-200 rounded-xl border border-slate-200 px-2 flex items-center justify-between">
             <select name="type" id="" class="outline-slate-200 px-2">
@@ -31,12 +31,12 @@ console.log(productsData.value)
             <table class="w-full">
                 <thead>
                     <tr class="border-b border-slate-200 text-slate-600">
-                        <th class="text-left py-3">ID</th>
-                        <th class="text-left py-3">Image</th>
-                        <th class="text-left py-3">Name</th>
-                        <th class="text-left py-3">Price</th>
-                        <th class="text-left py-3">New Price</th>
-                        <th class="text-left py-3">Promotion</th>
+                        <th class="text-left py-3 px-5">ID</th>
+                        <th class="text-left py-3 px-5">Image</th>
+                        <th class="text-left py-3 px-5">Name</th>
+                        <th class="text-left py-3 px-5">Price</th>
+                        <th class="text-left py-3 px-5 text-nowrap">New Price</th>
+                        <th class="text-left py-3 px-5">Promotion</th>
                     </tr>
                 </thead>
 

@@ -34,14 +34,10 @@ const getVerificationData = () => {
 
 export const handleError = (error: unknown) => {
     if (error instanceof AxiosError) {
-        console.error("Status:", error.response?.status);
-        console.error("Backend:", error.response?.data);
 
         throw error.response?.data ?? error.message;
     }
     throw new Error("Unknown error");
-    console.error(error);
-    throw error;
 };
 
 
@@ -134,6 +130,7 @@ export const logOut = async () => {
         Cookies.remove("role");
         Cookies.remove("userId");
         Cookies.remove("name");
+        localStorage.removeItem("restaurantId");
     } catch (error) {
         handleError(error);
     }

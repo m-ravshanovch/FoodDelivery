@@ -120,13 +120,9 @@ const router = createRouter({
         loginPath: "/staff-auth/login"
       },
       children: [
+      
         {
           path: "",
-          name: "Dashboard",
-          component: () => import("@/pages/admin/AdminHomePage.vue"),
-        },
-        {
-          path: "products",
           name: "Products",
           component: () => import("@/pages/admin/AdminProductsPage.vue"),
         },

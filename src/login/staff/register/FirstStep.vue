@@ -6,7 +6,16 @@ import { authApi } from "@/api/auth.api";
 import { ref, computed, onUnmounted } from "vue";
 import { verification } from "@/service/auth/AuthService";
 import { useRouter } from "vue-router";
-
+interface message {
+  message: string,
+  error: string,
+  statusCode: number
+}
+const errorMessage = ref<message>({
+  message: "",
+  error: "",
+  statusCode: 0
+})
 const validationSchema = toTypedSchema(
   z.object({
     email: z
@@ -21,7 +30,7 @@ const validationSchema = toTypedSchema(
 );
 
 
-const delay =(ms:number)=>new Promise((resolve)=>setTimeout(resolve,ms))
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 const router = useRouter();
 
 const email = ref("");
@@ -68,7 +77,7 @@ const handleGetCode = async (email: string) => {
     alert("Please enter your email first.");
     return;
   }
-  loadingGetVerification.value=true
+  loadingGetVerification.value = true
   await delay(1000)
 
   try {
@@ -80,17 +89,15 @@ const handleGetCode = async (email: string) => {
 
     startTimer();
   } catch (error: any) {
-    console.log(
-      "Error in taking Verification Code:",
-      error.response?.data || error
-    );
-  }finally{
-    loadingGetVerification.value=false
+    errorMessage.value = error.response?.data
+    
+  } finally {
+    loadingGetVerification.value = false
   }
 };
 
 const handleSubmitCode = async (values: any) => {
-  loadingMove.value=true
+  loadingMove.value = true
   try {
     await verification(values);
 
@@ -126,8 +133,8 @@ const handleSubmitCode = async (values: any) => {
 
             <button type="button" @click="handleGetCode(email)" :disabled="timeLeft > 0"
               class="w-fit rounded-md bg-green-900 cursor-pointer text-white font-semibold px-3 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-green-800 transition">
-             <p v-if="loadingGetVerification">Send..</p>
-             <p v-else>{{ timeLeft > 0 ? formattedTime : "Get" }}</p>
+              <p v-if="loadingGetVerification">Send..</p>
+              <p v-else>{{ timeLeft > 0 ? formattedTime : "Get" }}</p>
             </button>
           </div>
 
@@ -148,8 +155,11 @@ const handleSubmitCode = async (values: any) => {
             Login
           </RouterLink>
         </p>
-
-        <button type="submit" class="rounded-md cursor-pointer bg-green-600 py-2 font-bold text-white hover:bg-green-700 transition">
+        <p class="text-sm text-red-700">
+          {{ errorMessage.message }}
+        </p>
+        <button type="submit"
+          class="rounded-md cursor-pointer bg-green-600 py-2 font-bold text-white hover:bg-green-700 transition">
           <p v-if="loadingMove">Moving..</p>
           <p v-else>Next</p>
         </button>

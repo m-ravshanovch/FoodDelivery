@@ -57,7 +57,7 @@ const isLoading = computed(() => {
         <button
           @click="selectedCategory = ''"
           :class="[
-            'px-4 py-2 rounded-md border font-semibold whitespace-nowrap transition',
+            'px-4 py-2 rounded-md cursor-pointer border font-semibold whitespace-nowrap transition',
             selectedCategory === ''
               ? 'bg-green-600 text-white'
               : 'border-green-600 text-green-600'
@@ -71,7 +71,7 @@ const isLoading = computed(() => {
           :key="category.id"
           @click="selectedCategory = category.name"
           :class="[
-            'px-4 py-2 rounded-md border font-semibold whitespace-nowrap transition',
+            'px-4 py-2 rounded-md border cursor-pointer font-semibold whitespace-nowrap transition',
             selectedCategory === category.name
               ? 'bg-green-600 text-white'
               : 'border-green-600 text-green-600'

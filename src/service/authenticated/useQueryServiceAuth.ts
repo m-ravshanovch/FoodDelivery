@@ -3,6 +3,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/vue-query";
+import { computed } from "vue";
 import { useServiceAuth } from "./useServiceAuth";
 export const useQueryServiceAuth = () => {
   const queryClient = useQueryClient();
@@ -28,6 +29,15 @@ export const useQueryServiceAuth = () => {
       queryKey: ["availableOrders"],
       queryFn: async () => {
         const response = await useServiceAuth.getAvailableOrders();
+        return response.data;
+      },
+    });
+  const useGetMyOrdersByCustomerId = (customer_id:number) =>
+    useQuery({
+      queryKey: ["orders"],
+      enabled: computed(() => customer_id !== null),
+      queryFn: async () => {
+        const response = await useServiceAuth.getAllOrdersByCustomerId(customer_id);
         return response.data;
       },
     });
@@ -180,6 +190,7 @@ export const useQueryServiceAuth = () => {
     });
 
 
+
   return {
     useNotifications,
     useCreateOrder,
@@ -194,7 +205,8 @@ export const useQueryServiceAuth = () => {
     useChangeOrderStatus,
     useAvailableOrders,
     useMyInformation,
-    useGetOrderByCourier
+    useGetOrderByCourier,
+    useGetMyOrdersByCustomerId
     // useCategories
   };
 };

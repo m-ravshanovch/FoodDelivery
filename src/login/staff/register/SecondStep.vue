@@ -7,7 +7,7 @@ import { registerStaffNextStep } from "@/service/auth/AuthService";
 import { useQueryUsersData } from "@/service/unauthenticated/users/useQueryUsersData";
 import { ref } from "vue";
 const router = useRouter();
-
+const errorMessage = ref('')
 const validationSchema = toTypedSchema(
   z.object({
     name: z.string().min(1, "Name required"),
@@ -18,7 +18,8 @@ const validationSchema = toTypedSchema(
       .max(20, "Belgilar soni 20 tagacha"),
     phone_number: z
       .string()
-      .min(1, "Phone number required"),
+      .min(1, "Phone number required")
+      .max(13,"Phone number's length should be less than 13"),
     role_id: z.number().min(1, "Role tanlang"),
   })
 );
@@ -42,8 +43,11 @@ const onSubmit = async (values: any) => {
     await registerStaffNextStep(values);
 
     router.push("/staff-auth/login");
-  } catch (error) {
+  } catch (error:any) {
+    errorMessage.value = error.message
     console.log("Error:", error);
+  } finally{
+    loading.value=false
   }
 };
 </script>
@@ -62,13 +66,13 @@ const onSubmit = async (values: any) => {
           2</div>
       </div>
       <div class="flex flex-col">
-        <Field name="name" type="text" placeholder="First Name"
+        <Field name="name" type="text" maxlength="13" placeholder="First Name"
           class="py-2 border outline-green-600 border-slate-300 w-full px-2 " />
 
         <ErrorMessage name="name" class="text-red-500 text-sm" />
       </div>
       <div class="flex flex-col">
-        <Field name="phone_number" type="text" placeholder="Phone Number"
+        <Field name="phone_number"  type="text" maxlength="13" placeholder="Phone Number"
           class="py-2 border border-slate-300 outline-green-600 w-full px-2   " />
 
         <ErrorMessage name="phone_number" class="text-red-500 text-sm" />
@@ -77,14 +81,14 @@ const onSubmit = async (values: any) => {
       <div class="flex flex-col">
         <Field name="password" type="password" placeholder="Password" class="py-2 border border-slate-300 px-2 " />
         <ErrorMessage name="password" class="text-red-500 text-sm" />
-        <p class="text-xs">Password must contain at least one uppercase letter, one number, and one special
+        <p class="text-xs text-blue-600">Password must contain at least one uppercase letter, one number, and one special
           character. exp: Password_25</p>
       </div>
 
       <div class="flex flex-col">
         <Field name="role_id" as="select" class="py-2 border border-slate-300 px-2 ">
           <option value="">
-            {{ isLoading ? "Loading..." : "Select Role" }}
+            {{ isLoading ? "Loading..." : "Role tanlang" }}
           </option>
 
           <option v-for="role in roles ?? []" :key="role.id" :value="role.id">
@@ -98,6 +102,9 @@ const onSubmit = async (values: any) => {
           Roles yuklanmadi
         </p>
       </div>
+      <p class="text-sm text-red-700">
+        {{ errorMessage }}
+      </p>
 
       <!-- Submit -->
       <div class="flex gap-x-2">

@@ -4,8 +4,9 @@ import { z } from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useRouter } from "vue-router";
 import { registerNextStep } from "@/service/auth/AuthService";
+import { ref } from "vue";
 const router = useRouter()
-
+const errorMessage = ref('')
 const validationSchema = toTypedSchema(
     z.object({
         name: z
@@ -18,6 +19,7 @@ const validationSchema = toTypedSchema(
         phone_number: z
             .string()
             .min(1, "Phone number required")
+            .max(13,"Phone number's length must be less than 13")
     })
 
 );
@@ -30,8 +32,9 @@ const onSubmit = async (values: any) => {
         router.push("/auth/login")
 
 
-    } catch (error) {
-        console.log("Error:", error);
+    } catch (error:any) {
+        errorMessage.value = error.message
+        console.log("Error:",error.message);
     }
 }
 </script>
@@ -71,7 +74,9 @@ const onSubmit = async (values: any) => {
                 <p class="text-xs">Password must contain at least one uppercase letter, one number, and one special
                     character. exp: Password_25</p>
             </div>
-
+            <p class="text-sm text-red-700">
+                {{ errorMessage }}
+            </p>
             <div class="flex gap-x-2">
                 <RouterLink to="/auth/register" type="submit"
                     class="cursor-pointer  flex justify-center transition-all duration-300 py-2 text-green-600 w-full border border-green-600 font-bold rounded-md">Back</RouterLink>

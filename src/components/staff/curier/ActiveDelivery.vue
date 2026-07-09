@@ -9,7 +9,7 @@ console.log("orders",ordersData.value)
 <template>
     <div class="py-5 bg-amber-500 rounded-2xl">
         <div class="flex justify-center">
-            <p>Active Delivery</p>
+            <p class="text-white">Active Delivery</p>
         </div>
     </div>
 </template>

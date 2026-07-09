@@ -119,7 +119,7 @@ console.log("Restaurant page:", productsData.value)
                                 <img :src="food.img_product" :alt="food.name"
                                     class="w-full h-full rounded-2xl object-cover">
                                 <button class="absolute top-0 right-0 p-2">
-                                    <Heart class="text-white" />
+                                    <Heart class="text-red-600" />
                                 </button>
                             </div>
                             <div class="flex flex-col gap-3 p-2">
