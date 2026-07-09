@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import { Hamburger, Zap } from "lucide-vue-next";
 import ClipLoader from "vue-spinner/src/ClipLoader.vue";
 import { computed, ref } from "vue";
 import { useQueryService } from "@/service/unauthenticated/useQueryService";
-
+import { useRouter } from "vue-router";
+import { useCartStore } from "@/stores/card";
+import { useRestaurantStore } from "@/stores/restaurant";
+const {clearCart} = useCartStore()
+const {setRestaurantId} = useRestaurantStore()
+const router = useRouter()
 const {
   useRestaurants,
   useRestaurantsByCategory,
@@ -45,6 +49,12 @@ const isLoading = computed(() => {
 
   return loadingCategory.value;
 });
+
+const handleMoveRestaurantPage = (restaurantId:string)=>{
+  clearCart()
+  setRestaurantId(restaurantId)
+  router.push(`/restaurant/${restaurantId}`)
+}
 </script>
 
 <template>
@@ -66,7 +76,7 @@ const isLoading = computed(() => {
           All
         </button>
 
-        <button
+        <button 
           v-for="category in categoriesData"
           :key="category.id"
           @click="selectedCategory = category.name"
@@ -107,11 +117,10 @@ const isLoading = computed(() => {
       v-else
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-2"
     >
-      <RouterLink
+      <button
+        @click.prevent="handleMoveRestaurantPage(restaurant.id)"
         v-for="restaurant in restaurants"
-        :key="restaurant.id"
-        :to="`/restaurant/${restaurant.id}`"
-        class="rounded-2xl shadow-md shadow-slate-200 overflow-hidden hover:shadow-lg transition"
+        class="rounded-2xl cursor-pointer shadow-md shadow-slate-200 overflow-hidden hover:shadow-lg transition"
       >
         <div class="h-40">
           <img
@@ -134,7 +143,7 @@ const isLoading = computed(() => {
             20-30 min
           </div>
         </div>
-      </RouterLink>
+      </button>
     </div>
   </div>
 </template>

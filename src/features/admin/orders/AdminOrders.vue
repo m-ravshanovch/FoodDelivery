@@ -112,8 +112,8 @@ const badgeClass = (status: string) => {
                     </div>
                 </div>
             </div>
-            <div class=" flex flex-col gap-5 md:flex-row items-center justify-between">
-                <div class="flex flex-row gap-5 md:flex-col items-center">
+            <div class=" flex flex-col gap-5 md:flex-row  justify-between">
+                <div class="flex flex-row gap-3 md:flex-col items-center md:items-start">
                     <p :class="[
                         'px-3 py-1 rounded-full text-sm font-semibold w-fit',
                         badgeClass(order.status),
@@ -126,7 +126,7 @@ const badgeClass = (status: string) => {
                     </p>
 
                 </div>
-                <div class="w-full">
+                <div class="w-full md:w-fit">
                     <button v-if="nextStatus(order.status)" :disabled="isPending" @click="
                         handleChangeStatus(
                             nextStatus(order.status)!.value,
@@ -139,7 +139,6 @@ const badgeClass = (status: string) => {
                     <div v-else class="bg-green-100 text-green-700 px-5 py-2 rounded-xl font-semibold">
                         ✅ Delivered
                     </div>
-
                 </div>
 
             </div>

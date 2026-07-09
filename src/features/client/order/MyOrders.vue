@@ -41,9 +41,9 @@ const badgeClass = (status: string) => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 mt-4">
+    <div class="flex flex-col gap-6 p-2">
         <div>
-            <p class="text-2xl">Buyurtmalarim</p>
+            <p class="text-2xl text-slate-400 font-bold">Buyurtmalarim</p>
         </div>
         <div v-if="ordersData?.length > 0" v-for="order in ordersData" :key="order.id"
             class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">

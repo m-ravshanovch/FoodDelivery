@@ -1,22 +1,10 @@
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
 import { authApi } from "@/api/auth.api";
+import type { Login } from "@/types/AuthTypes";
+import type { Verification } from "@/types/AuthTypes";
+import type { RegisterForm } from "@/types/AuthTypes";
 
-interface Login {
-    email: string;
-    password: string;
-}
-
-interface Verification {
-    email: string;
-    code: string;
-}
-
-interface RegisterForm {
-    name: string;
-    password: string;
-    phone_number: string;
-}
 
 interface RegisterStaffForm extends RegisterForm {
     role_id: number;
@@ -119,7 +107,6 @@ export const registerStaffNextStep = async (
     }
 };
 
-// ================= LOGOUT =================
 
 export const logOut = async () => {
     try {
