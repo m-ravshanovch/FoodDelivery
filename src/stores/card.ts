@@ -21,7 +21,6 @@ export const useCartStore = defineStore("cart", () => {
     JSON.parse(localStorage.getItem("cart") || "[]")
   );
 
-  // Cart o'zgarsa localStorage ga yozadi
   watch(
     cart,
     (newCart) => {
