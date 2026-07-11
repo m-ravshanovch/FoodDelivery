@@ -39,7 +39,7 @@ const handleMove = async () => {
             <div class="p-2">
                 <p class="font-bold text-xl">Shopping Cart</p>
             </div>
-            <div v-if="cart.length > 0" class="p-2 flex flex-col gap-y-5 overflow-y-auto">
+            <div v-if="cart.length > 0" class="p-2 flex flex-col max-h-90 gap-y-5 overflow-y-auto">
                 <div v-for="item in cart"
                     class="flex bg-white border-b py-2 border-slate-200 justify-between items-center gap-x-2">
                     <div class="flex flex-col gap-x-2">

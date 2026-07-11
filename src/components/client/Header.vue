@@ -58,9 +58,9 @@ onBeforeUnmount(() => {
   <header class="flex w-full sticky top-0 left-0 z-50 justify-between py-2 px-3 bg-white items-center">
     <div class="bg-white py-1 rounded-md">
       <a href="/" class="text-xl font-bold text-green-600 px-2 font-serif">
-        Ishonch
+        Food
         <span class="bg-orange-600 px-1 rounded-md italic text-white">
-          EAT
+          EX
         </span>
       </a>
     </div>

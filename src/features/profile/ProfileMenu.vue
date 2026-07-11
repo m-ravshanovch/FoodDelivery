@@ -59,8 +59,8 @@ const handleLogout = async () => {
                 </RouterLink>
             </div>
         </div>
-
-        <button
+        
+        <button v-if="role"
             @click.prevent="handleLogout"
             class="w-full flex cursor-pointer justify-center gap-x-2  items-center mt-4 bg-green-600 hover:bg-green-700 transition text-white py-2 rounded-xl font-medium">
             <p class="text-sm">Profildan Chiqish</p>
