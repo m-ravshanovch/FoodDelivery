@@ -56,7 +56,6 @@ const onSubmit = async (values: any) => {
 
     <Form :validation-schema="validationSchema" @submit="onSubmit" class="flex flex-col gap-y-3 w-full md:w-90 ">
       <div>
-        <RouterLink to="/staff-auth/login">staff Login{'->'}</RouterLink>
         <p class=" text-black font-bold text-2xl ">
           Hello! Welcome Back
         </p>
@@ -81,7 +80,6 @@ const onSubmit = async (values: any) => {
             Register
           </RouterLink>
         </p>
-        <RouterLink to="/staff-auth/login" class="text-sm text-blue-600 underline">staff Login{'->'}</RouterLink>
       </div>
 
       <p class="text-sm text-red-700">
@@ -94,6 +92,8 @@ const onSubmit = async (values: any) => {
           {{ isLoading ? "Signing in..." : "Submit" }}
         </span>
       </button>
+        <RouterLink to="/staff-auth/login" class="text-sm text-blue-600 underline">Xodimlar uchun</RouterLink>
+
     </Form>
   </div>
 </template>

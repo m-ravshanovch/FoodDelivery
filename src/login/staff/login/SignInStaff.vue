@@ -75,7 +75,6 @@ const onSubmit = async (values: any) => {
                         class="underline text-blue-600">register</RouterLink>
                 </p>
             </div>
-            <RouterLink to="/auth/login" class="text-sm text-blue-600 underline">client Login{'->'}</RouterLink>
             <p class="text-sm text-red-700">
                 {{ errorMessage }}
             </p>
@@ -85,6 +84,8 @@ const onSubmit = async (values: any) => {
                     <p v-if="loading">Signin..</p>
                     <p v-else>submit</p>
                 </button>
+        <RouterLink to="/auth/login" class="text-sm text-blue-600 underline">Mijozlar uchun</RouterLink>
+
             </div>
         </Form>
     </div>
