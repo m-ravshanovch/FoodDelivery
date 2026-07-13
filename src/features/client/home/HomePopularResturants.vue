@@ -130,7 +130,7 @@ const handleMoveRestaurantPage = (restaurantId:string)=>{
           />
         </div>
 
-        <div class="p-3 flex flex-col gap-3">
+        <div class="p-3 flex flex-col items-start gap-3">
           <h2 class="font-bold text-lg">
             {{ restaurant.name }}
           </h2>
