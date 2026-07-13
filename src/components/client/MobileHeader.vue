@@ -53,8 +53,8 @@ onBeforeUnmount(() => {
 <template>
     <header class="flex  sticky z-50 top-0 left-0 justify-between py-2 px-3 bg-white text-white items-center">
         <RouterLink to="/" class="bg-white py-1 rounded-md">
-            <p class="text-xl font-bold text-green-600 px-2 font-serif ">Ishonch <span
-                    class="bg-orange-600 px-1 rounded-md italic text-white">EAT</span></p>
+            <p class="text-xl font-bold text-green-600 px-2 font-serif ">Food <span
+                    class="bg-orange-600 px-1 rounded-md italic text-white">EX</span></p>
         </RouterLink>
         <div class="flex gap-3 items-center">
             <div ref="notificationRef" class="flex md:relative items-center justify-center gap-x-3">
