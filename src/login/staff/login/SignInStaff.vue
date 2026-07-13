@@ -75,6 +75,7 @@ const onSubmit = async (values: any) => {
                         class="underline text-blue-600">register</RouterLink>
                 </p>
             </div>
+            <RouterLink to="/auth/login" class="text-sm text-blue-600 underline">client Login{'->'}</RouterLink>
             <p class="text-sm text-red-700">
                 {{ errorMessage }}
             </p>
