@@ -56,7 +56,7 @@ const badgeClass = (status: string) => {
             <div class="flex flex-wrap gap-3">
 
                 <div v-for="item in order.items" :key="item.id"
-                    class="flex overflow-hidden rounded-xl border border-slate-200">
+                    class="flex overflow-hidden rounded-x">
                     <img :src="item.imgUrl" class="w-24 h-24 object-cover" />
 
                     <div class="px-4 py-2">
